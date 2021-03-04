@@ -15,17 +15,17 @@ public final class Constants {
             widthToHeightWheelbaseRatio = .851;
     
     public static final double
-            kP = 0.5,
+            kP = 0.8,
             kI = 0,
             kD = 0,
             tmpValue = 1.5;
     
     // Swerve Wheels
     public static final int
-            flRotationMotor = 1,
+            flRotationMotor = 12,
             flDirectionMotor = 2,
             
-            frRotationMotor = 12,
+            frRotationMotor = 1,
             frDirectionMotor = 13,
             
             rlRotationMotor = 4,

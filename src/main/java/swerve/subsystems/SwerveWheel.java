@@ -142,7 +142,7 @@ abstract public class SwerveWheel extends SubsystemBase {
     public boolean checkWithin180Range (double direction, double marginOfError) {
         double direction180 = direction + 180;
         if (direction180 >= 360) direction180 -= 360;
-        return checkWithin180Range(direction, marginOfError) || checkWithin180Range(direction180, marginOfError);
+        return checkWithinRange(direction, marginOfError) || checkWithinRange(direction180, marginOfError);
     }
     
     /**

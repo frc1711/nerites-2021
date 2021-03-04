@@ -14,7 +14,7 @@ public class AutonDriveCommand extends CommandBase {
         DRIVING,
         ENDING
     }
-    private static final double DIRECTION_MARGIN_OF_ERROR = 1.5;
+    private static final double DIRECTION_MARGIN_OF_ERROR = 5;
     
     private final FESwerveDrive swerveDrive;
     private Phases phase;
@@ -35,7 +35,7 @@ public class AutonDriveCommand extends CommandBase {
      */
     public AutonDriveCommand (FESwerveDrive _swerveDrive, double _direction, double _distance, double _speed) {
         swerveDrive = _swerveDrive;
-        phase = Phases.TURNING;
+        phase = Phases.DRIVING;
         direction = _direction;
         distance = _distance;
         speed = _speed;
@@ -44,6 +44,7 @@ public class AutonDriveCommand extends CommandBase {
     @Override
     public void initialize () {
         swerveDrive.stopMotor();
+        swerveDrive.setDistanceReference(); // TODO: Remove this
     }
     
     @Override
@@ -53,11 +54,18 @@ public class AutonDriveCommand extends CommandBase {
     }
     
     private void executeTurning () {
-        if (swerveDrive.steerAllWithinRange(direction, DIRECTION_MARGIN_OF_ERROR)) phase = Phases.DRIVING;
+        if (swerveDrive.steerAllWithinRange(direction, DIRECTION_MARGIN_OF_ERROR)) {
+            phase = Phases.DRIVING;
+            swerveDrive.setDistanceReference();
+        }
     }
     
     private void executeDriving () {
-        phase = Phases.ENDING;
+        if (swerveDrive.getDistanceTraveled() < distance) {
+            swerveDrive.steerAndDriveAll(direction, speed);
+        } else {
+            phase = Phases.ENDING;
+        }
     }
     
     @Override

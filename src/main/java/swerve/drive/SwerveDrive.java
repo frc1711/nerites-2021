@@ -143,6 +143,8 @@ public class SwerveDrive extends RobotDriveBase {
         frWheel.steerAndDrive(frVector.getRotationDegrees(), frSpeed);
         rlWheel.steerAndDrive(rlVector.getRotationDegrees(), rlSpeed);
         rrWheel.steerAndDrive(rrVector.getRotationDegrees(), rrSpeed);
+        
+        feed();
     }
     
     /**
@@ -160,6 +162,8 @@ public class SwerveDrive extends RobotDriveBase {
         frWheel.steerAndDrive(targetDirection, speed);
         rlWheel.steerAndDrive(targetDirection, speed);
         rrWheel.steerAndDrive(targetDirection, speed);
+        
+        feed();
     }
     
     /**
@@ -178,6 +182,8 @@ public class SwerveDrive extends RobotDriveBase {
         rlWheel.steerAndDrive(direction, 0);
         rrWheel.steerAndDrive(direction, 0);
         
+        feed();
+        
         return  flWheel.checkWithin180Range(direction, marginOfError) &&
                 frWheel.checkWithin180Range(direction, marginOfError) &&
                 rlWheel.checkWithin180Range(direction, marginOfError) &&
@@ -193,6 +199,8 @@ public class SwerveDrive extends RobotDriveBase {
         frWheel.stop();
         rlWheel.stop();
         rrWheel.stop();
+        
+        feed();
     }
     
     @Override

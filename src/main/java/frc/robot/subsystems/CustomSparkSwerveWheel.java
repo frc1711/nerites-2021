@@ -10,13 +10,14 @@ import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.ControlType;
+import com.revrobotics.EncoderType;
 
 import frc.robot.Constants;
 import swerve.subsystems.FESwerveWheel;
 
 public class CustomSparkSwerveWheel extends FESwerveWheel {
     
-    private static final double revsToInches = 12.5663706144;
+    private static final double revsToInches = 12.566 / 8.16;
     
     private final CANSparkMax directDrive, rotationDrive;
     private final CANPIDController rotationDrivePID;
@@ -34,7 +35,7 @@ public class CustomSparkSwerveWheel extends FESwerveWheel {
         rotationDrivePID.setI(Constants.kI);
         rotationDrivePID.setD(Constants.kD);
         
-        driveEncoder = directDrive.getEncoder();
+        driveEncoder = directDrive.getEncoder(EncoderType.kHallSensor, 42);
     }
     
     @Override
