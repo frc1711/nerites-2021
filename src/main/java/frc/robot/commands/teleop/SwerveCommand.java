@@ -9,8 +9,8 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.Constants;
-import swerve.drive.FESwerveDrive;
-import swerve.subsystems.FESwerveWheel;
+import frc.team1711.swerve.drive.FESwerveDrive;
+import frc.team1711.swerve.subsystems.FESwerveWheel;
 
 public class SwerveCommand extends CommandBase {
     

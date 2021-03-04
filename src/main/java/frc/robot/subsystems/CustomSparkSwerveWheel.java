@@ -13,7 +13,7 @@ import com.revrobotics.ControlType;
 import com.revrobotics.EncoderType;
 
 import frc.robot.Constants;
-import swerve.subsystems.FESwerveWheel;
+import frc.team1711.swerve.subsystems.FESwerveWheel;
 
 public class CustomSparkSwerveWheel extends FESwerveWheel {
     
