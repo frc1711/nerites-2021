@@ -15,7 +15,7 @@ import com.revrobotics.EncoderType;
 import frc.robot.Constants;
 import frc.team1711.swerve.subsystems.FESwerveWheel;
 
-public class CustomSparkSwerveWheel extends FESwerveWheel {
+public class SparkWheel extends FESwerveWheel {
     
     private static final double revsToInches = 12.566 / 8.16;
     
@@ -23,7 +23,7 @@ public class CustomSparkSwerveWheel extends FESwerveWheel {
     private final CANPIDController rotationDrivePID;
     private final CANEncoder steerEncoder, driveEncoder;
     
-    public CustomSparkSwerveWheel (int rotationID, int directionID) {
+    public SparkWheel (int rotationID, int directionID) {
         rotationDrive = new CANSparkMax(rotationID, CANSparkMaxLowLevel.MotorType.kBrushless);
         directDrive = new CANSparkMax(directionID, CANSparkMaxLowLevel.MotorType.kBrushless);
         
@@ -39,38 +39,42 @@ public class CustomSparkSwerveWheel extends FESwerveWheel {
     }
     
     @Override
-    public void resetDriveEncoder() {
+    protected void resetDriveEncoder () {
         driveEncoder.setPosition(0);
     }
     
     @Override
-    public double getPositionDifference() {
+    protected double getPositionDifference () {
         return driveEncoder.getPosition() * revsToInches;
     }
     
     @Override
-    public double getRawDirection() {
-        return -steerEncoder.getPosition();
+    protected double getDirection () {
+        double direction = -steerEncoder.getPosition() * 360;
+        while (direction < 0) direction += 360;
+        while (direction >= 360) direction -= 360;
+        return direction;
     }
     
     @Override
-    public void setRawDirection(double targetDirection) {
-        rotationDrivePID.setReference(-targetDirection, ControlType.kPosition);
+    protected void setDirection (double targetDirection) {
+        // Gets the desired change in direction, and places on the interval [-180, 180)
+        double moveDirection = targetDirection - steerEncoder.getPosition() * 360;
+        while (moveDirection < -180) moveDirection += 360;
+        while (moveDirection >= 180) moveDirection -= 360;
+        
+        // Sets the PID loop
+        rotationDrivePID.setReference(-(moveDirection / 360 + steerEncoder.getPosition()), ControlType.kPosition);
     }
     
     @Override
-    public void setDriveSpeed(double speed) {
+    protected void setDriveSpeed (double speed) {
         directDrive.set(speed);
     }
     
     @Override
-    public void stopSteering() {
+    protected void stopSteering () {
         rotationDrivePID.setReference(steerEncoder.getPosition(), ControlType.kPosition);
-    }
-    
-    @Override
-    public void resetSteerEncoder() {
-        steerEncoder.setPosition(0);
     }
     
 }

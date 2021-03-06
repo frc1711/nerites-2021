@@ -7,19 +7,16 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.auton.AutonDriveCommand;
-import frc.robot.commands.teleop.SwerveCommand;
-import frc.robot.subsystems.CustomSparkSwerveWheel;
-import frc.team1711.swerve.drive.FESwerveDrive;
+
+import frc.robot.commands.SwerveCommand;
+import frc.robot.subsystems.SparkWheel;
+import frc.team1711.swerve.subsystems.FESwerveDrive;
+import frc.team1711.swerve.commands.AutonDrive;
 
 public class RobotContainer {
     
-    //private final SwerveCommand swerveCommand;
-    private final CustomSparkSwerveWheel
-            flWheel,
-            frWheel,
-            rlWheel,
-            rrWheel;
+    private final SwerveCommand swerveCommand;
+    private final FESwerveDrive swerveDrive;
     
     private final Joystick controller;
     
@@ -27,29 +24,27 @@ public class RobotContainer {
         
         controller = new Joystick(Constants.mainController);
         
-        flWheel = new CustomSparkSwerveWheel(Constants.flRotationMotor, Constants.flDirectionMotor);
-        frWheel = new CustomSparkSwerveWheel(Constants.frRotationMotor, Constants.frDirectionMotor);
-        rlWheel = new CustomSparkSwerveWheel(Constants.rlRotationMotor, Constants.rlDirectionMotor);
-        rrWheel = new CustomSparkSwerveWheel(Constants.rrRotationMotor, Constants.rrDirectionMotor);
+        swerveDrive = new FESwerveDrive(
+                new SparkWheel(Constants.flRotationMotor, Constants.flDirectionMotor),
+                new SparkWheel(Constants.frRotationMotor, Constants.frDirectionMotor),
+                new SparkWheel(Constants.rlRotationMotor, Constants.rlDirectionMotor),
+                new SparkWheel(Constants.rrRotationMotor, Constants.rrDirectionMotor),
+                Constants.widthToHeightWheelbaseRatio);
+        swerveDrive.setMaxOutput(Constants.maxWheelSpeed);
         
-        // swerveCommand = new SwerveCommand(
-        //         flWheel, frWheel, rlWheel, rrWheel,
-        //         () -> controller.getRawAxis(Constants.directMoveXAxis) * Constants.directMoveXAxisScalar,
-        //         () -> controller.getRawAxis(Constants.directMoveYAxis) * Constants.directMoveYAxisScalar,
-        //         () -> controller.getRawAxis(Constants.rotateAxis) * Constants.rotateAxisScalar);
+        swerveCommand = new SwerveCommand(
+                swerveDrive,
+                () -> controller.getRawAxis(Constants.directMoveXAxis) * Constants.directMoveXAxisScalar,
+                () -> controller.getRawAxis(Constants.directMoveYAxis) * Constants.directMoveYAxisScalar,
+                () -> controller.getRawAxis(Constants.rotateAxis) * Constants.rotateAxisScalar);
         
-        // flWheel.setDefaultCommand(swerveCommand);
+        swerveDrive.setDefaultCommand(swerveCommand);
     }
     
     public Command getAutonomousCommand () {
-        FESwerveDrive swerveDrive = new FESwerveDrive(flWheel, frWheel, rlWheel, rrWheel,
-                Constants.widthToHeightWheelbaseRatio);
-        swerveDrive.setSafetyEnabled(false);
         return new SequentialCommandGroup(
-                new AutonDriveCommand(swerveDrive, 180, 24*10, 0.4),
-                new AutonDriveCommand(swerveDrive, 90, 48*10, 0.4)
-        );
-        
+                new AutonDrive(swerveDrive, 180, 24*10, 0.4),
+                new AutonDrive(swerveDrive, 90, 48*10, 0.4));
     }
     
 }
