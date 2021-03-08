@@ -13,9 +13,9 @@ import com.revrobotics.ControlType;
 import com.revrobotics.EncoderType;
 
 import frc.robot.Constants;
-import frc.team1711.swerve.subsystems.FESwerveWheel;
+import frc.team1711.swerve.subsystems.AutoSwerveWheel;
 
-public class SparkWheel extends FESwerveWheel {
+public class SparkWheel extends AutoSwerveWheel {
     
     private static final double revsToInches = 12.566 / 8.16;
     

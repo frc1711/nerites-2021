@@ -9,11 +9,11 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.Constants;
-import frc.team1711.swerve.subsystems.FESwerveDrive;
+import frc.robot.subsystems.SparkDrive;
 
 public class SwerveCommand extends CommandBase {
     
-    private final FESwerveDrive swerveDrive;
+    private final SparkDrive swerveDrive;
     
     private final DoubleSupplier
             dirMoveXAxis,
@@ -21,7 +21,7 @@ public class SwerveCommand extends CommandBase {
             rotAxis;
     
     public SwerveCommand (
-            FESwerveDrive _swerveDrive,
+            SparkDrive _swerveDrive,
             DoubleSupplier _dirMoveXAxis,
             DoubleSupplier _dirMoveYAxis,
             DoubleSupplier _rotAxis) {

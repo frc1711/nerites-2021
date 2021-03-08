@@ -9,14 +9,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 import frc.robot.commands.SwerveCommand;
+import frc.robot.subsystems.SparkDrive;
 import frc.robot.subsystems.SparkWheel;
-import frc.team1711.swerve.subsystems.FESwerveDrive;
 import frc.team1711.swerve.commands.AutonDrive;
 
 public class RobotContainer {
     
     private final SwerveCommand swerveCommand;
-    private final FESwerveDrive swerveDrive;
+    private final SparkDrive swerveDrive;
     
     private final Joystick controller;
     
@@ -24,13 +24,11 @@ public class RobotContainer {
         
         controller = new Joystick(Constants.mainController);
         
-        swerveDrive = new FESwerveDrive(
+        swerveDrive = new SparkDrive(
                 new SparkWheel(Constants.flRotationMotor, Constants.flDirectionMotor),
                 new SparkWheel(Constants.frRotationMotor, Constants.frDirectionMotor),
                 new SparkWheel(Constants.rlRotationMotor, Constants.rlDirectionMotor),
-                new SparkWheel(Constants.rrRotationMotor, Constants.rrDirectionMotor),
-                Constants.widthToHeightWheelbaseRatio);
-        swerveDrive.setMaxOutput(Constants.maxWheelSpeed);
+                new SparkWheel(Constants.rrRotationMotor, Constants.rrDirectionMotor));
         
         swerveCommand = new SwerveCommand(
                 swerveDrive,

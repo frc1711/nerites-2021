@@ -34,19 +34,6 @@ public final class Constants {
             rrRotationMotor = 14,
             rrDirectionMotor = 15;
     
-    // flRotationMotor = 12,
-    // flDirectionMotor = 2,
-    
-    // frRotationMotor = 1,
-    // frDirectionMotor = 13,
-    
-    // rlRotationMotor = 4,
-    // rlDirectionMotor = 3,
-    
-    // rrRotationMotor = 14,
-    // rrDirectionMotor = 15;
-    
-    
     // OI
     public static final int
             directMoveXAxis = 0,
