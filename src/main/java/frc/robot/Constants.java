@@ -43,8 +43,10 @@ public final class Constants {
             directMoveYAxisScalar = -1;
     
     public static final int
-            rotateAxis = 4,
-            rotateAxisScalar = 1;
+            rotateXAxis = 4,
+            rotateXAxisScalar = 1,
+            rotateYAxis = 5,
+            rotateYAxisScalar = -1;
     
     public static final int mainController = 0;
     

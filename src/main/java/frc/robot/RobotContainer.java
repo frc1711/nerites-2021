@@ -34,7 +34,8 @@ public class RobotContainer {
                 swerveDrive,
                 () -> controller.getRawAxis(Constants.directMoveXAxis) * Constants.directMoveXAxisScalar,
                 () -> controller.getRawAxis(Constants.directMoveYAxis) * Constants.directMoveYAxisScalar,
-                () -> controller.getRawAxis(Constants.rotateAxis) * Constants.rotateAxisScalar);
+                () -> controller.getRawAxis(Constants.rotateXAxis) * Constants.rotateXAxisScalar,
+                () -> controller.getRawAxis(Constants.rotateYAxis) * Constants.rotateYAxisScalar);
         
         swerveDrive.setDefaultCommand(swerveCommand);
     }

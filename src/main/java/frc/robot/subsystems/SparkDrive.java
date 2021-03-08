@@ -21,7 +21,7 @@ public class SparkDrive extends AutoSwerveDrive {
         
         // Strafing
         final Vector strafeInput = new Vector(strafeX, steerY);
-        // TODO: Field-relative strafing
+        final Vector fieldStrafeInput = strafeInput.toRotationDegrees(fieldRelativeToRobotRelative(strafeInput.getRotationDegrees()));
         
         // Turning
         // Gets the desired field-relative rotation of the robot
@@ -38,7 +38,7 @@ public class SparkDrive extends AutoSwerveDrive {
         moveRotation /= 180;
         
         // Runs input drive
-        super.inputDrive(strafeX, strafeY, moveRotation);
+        super.inputDrive(fieldStrafeInput.getX(), fieldStrafeInput.getY(), moveRotation);
     }
     
     private double fieldRelativeToRobotRelative (double rotation) {

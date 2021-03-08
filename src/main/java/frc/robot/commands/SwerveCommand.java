@@ -18,13 +18,15 @@ public class SwerveCommand extends CommandBase {
     private final DoubleSupplier
             dirMoveXAxis,
             dirMoveYAxis,
-            rotAxis;
+            rotXAxis,
+            rotYAxis;
     
     public SwerveCommand (
             SparkDrive _swerveDrive,
             DoubleSupplier _dirMoveXAxis,
             DoubleSupplier _dirMoveYAxis,
-            DoubleSupplier _rotAxis) {
+            DoubleSupplier _rotXAxis,
+            DoubleSupplier _rotYAxis) {
         
         swerveDrive = _swerveDrive;
         
@@ -32,7 +34,8 @@ public class SwerveCommand extends CommandBase {
         
         dirMoveXAxis = _dirMoveXAxis;
         dirMoveYAxis = _dirMoveYAxis;
-        rotAxis = _rotAxis;
+        rotXAxis = _rotXAxis;
+        rotYAxis = _rotYAxis;
     }
     
     @Override
@@ -44,15 +47,19 @@ public class SwerveCommand extends CommandBase {
     public void execute () {
         double directMoveXAxis = dirMoveXAxis.getAsDouble();
         double directMoveYAxis = dirMoveYAxis.getAsDouble();
-        double rotateAxis = rotAxis.getAsDouble();
+        double rotateXAxis = rotXAxis.getAsDouble();
+        double rotateYAxis = rotYAxis.getAsDouble();
         
         if (Math.abs(directMoveXAxis) < Constants.joystickDeadzone && Math.abs(directMoveYAxis) < Constants.joystickDeadzone) {
             directMoveXAxis = 0;
             directMoveYAxis = 0;
         }
-        if (Math.abs(rotateAxis) < Constants.joystickDeadzone) rotateAxis = 0;
+        if (Math.abs(rotateXAxis) < Constants.joystickDeadzone && Math.abs(rotateYAxis) < Constants.joystickDeadzone) {
+            rotateXAxis = 0;
+            rotateYAxis = 0;
+        }
         
-        swerveDrive.inputDrive(directMoveXAxis, directMoveYAxis, rotateAxis);
+        swerveDrive.fieldRelativeInputDrive(directMoveXAxis, directMoveYAxis, rotateXAxis, rotateYAxis);
     }
     
     @Override

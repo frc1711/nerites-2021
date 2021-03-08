@@ -45,6 +45,9 @@ public class SparkWheel extends AutoSwerveWheel {
     
     @Override
     protected double getPositionDifference () {
+        // TODO: .getPosition() may only get the counts
+        // for the neo encoder, check github, do a full rev
+        // and watch counts
         return driveEncoder.getPosition() * revsToInches;
     }
     
