@@ -6,21 +6,30 @@ package frc.robot;
 
 public final class Constants {
     
-    // Swerve drive
+    // Speed and hardware constants
     public static final double
-            driveSpeed = 0.2,
-            turnSpeed = 0.05,
-            maxWheelSpeed = 0.7,
-            joystickDeadzone = 0.1,
-            widthToHeightWheelbaseRatio = .851;
+            driveSpeed = .2,
+            turnSpeed = .05,
+            maxWheelSpeed = .7,
+            
+            flyWheelSpeed = .75,
+            shooterSpeed = 8700,
+            shooterSpeedBound = 200,
+            
+            widthToHeightWheelbaseRatio = 1/.851; // TODO: Fix this
     
+    // PID
     public static final double
-            kP = 1.6,
-            kI = 0,
-            kD = 0,
-            tmpValue = 1.5;
+            wheelkP = .6,
+            wheelkI = 0,
+            wheelkD = 0,
+            
+            shooterkP = .0075,
+            shooterkI = .0001,
+            shooterkD = shooterkP * 5,
+            shooterkF = .09;
     
-    // Swerve Wheels
+    // CAN IDs
     public static final int
             flRotationMotor = 12,
             flDirectionMotor = 2,
@@ -32,7 +41,12 @@ public final class Constants {
             rlDirectionMotor = 13,
             
             rrRotationMotor = 14,
-            rrDirectionMotor = 15;
+            rrDirectionMotor = 15,
+            
+            shooterLeft = 0,
+            shooterRight = 5,
+            
+            flyWheel = 8;
     
     // OI
     public static final int
@@ -45,8 +59,12 @@ public final class Constants {
     public static final int
             rotateXAxis = 4,
             rotateXAxisScalar = 1,
+            
             rotateYAxis = 5,
             rotateYAxisScalar = -1;
+    
+    public static final double
+            joystickDeadzone = .08;
     
     public static final int mainController = 0;
     

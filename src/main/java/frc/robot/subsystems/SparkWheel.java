@@ -10,14 +10,16 @@ import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.ControlType;
-import com.revrobotics.EncoderType;
 
 import frc.robot.Constants;
 import frc.team1711.swerve.subsystems.AutoSwerveWheel;
 
+/**
+ * @author Gabriel Seaver
+ */
 public class SparkWheel extends AutoSwerveWheel {
     
-    private static final double revsToInches = 12.566 / 8.16;
+    private static final double countsToInches = 12.566 / 8.16 / 42;
     
     private final CANSparkMax directDrive, rotationDrive;
     private final CANPIDController rotationDrivePID;
@@ -31,11 +33,11 @@ public class SparkWheel extends AutoSwerveWheel {
         rotationDrivePID = rotationDrive.getPIDController();
         rotationDrivePID.setFeedbackDevice(steerEncoder);
         
-        rotationDrivePID.setP(Constants.kP);
-        rotationDrivePID.setI(Constants.kI);
-        rotationDrivePID.setD(Constants.kD);
+        rotationDrivePID.setP(Constants.wheelkP);
+        rotationDrivePID.setI(Constants.wheelkI);
+        rotationDrivePID.setD(Constants.wheelkD);
         
-        driveEncoder = directDrive.getEncoder(EncoderType.kHallSensor, 42);
+        driveEncoder = directDrive.getEncoder();
     }
     
     @Override
@@ -48,7 +50,7 @@ public class SparkWheel extends AutoSwerveWheel {
         // TODO: .getPosition() may only get the counts
         // for the neo encoder, check github, do a full rev
         // and watch counts
-        return driveEncoder.getPosition() * revsToInches;
+        return driveEncoder.getPosition() * countsToInches;
     }
     
     @Override

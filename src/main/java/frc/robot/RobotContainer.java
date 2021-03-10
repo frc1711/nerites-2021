@@ -6,44 +6,47 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
+import frc.robot.commands.ShootCommand;
 import frc.robot.commands.SwerveCommand;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SparkDrive;
-import frc.robot.subsystems.SparkWheel;
 import frc.team1711.swerve.commands.AutonDrive;
 
 public class RobotContainer {
     
     private final SwerveCommand swerveCommand;
+    private final ShootCommand shootCommand;
+    
     private final SparkDrive swerveDrive;
+    private final Shooter shooter;
     
     private final Joystick controller;
     
     public RobotContainer () {
-        
         controller = new Joystick(Constants.mainController);
         
-        swerveDrive = new SparkDrive(
-                new SparkWheel(Constants.flRotationMotor, Constants.flDirectionMotor),
-                new SparkWheel(Constants.frRotationMotor, Constants.frDirectionMotor),
-                new SparkWheel(Constants.rlRotationMotor, Constants.rlDirectionMotor),
-                new SparkWheel(Constants.rrRotationMotor, Constants.rrDirectionMotor));
+        swerveDrive = new SparkDrive();
+        shooter = new Shooter();
         
         swerveCommand = new SwerveCommand(
                 swerveDrive,
                 () -> controller.getRawAxis(Constants.directMoveXAxis) * Constants.directMoveXAxisScalar,
                 () -> controller.getRawAxis(Constants.directMoveYAxis) * Constants.directMoveYAxisScalar,
-                () -> controller.getRawAxis(Constants.rotateXAxis) * Constants.rotateXAxisScalar,
-                () -> controller.getRawAxis(Constants.rotateYAxis) * Constants.rotateYAxisScalar);
+                () -> controller.getRawAxis(Constants.rotateXAxis) * Constants.rotateXAxisScalar);
+                // () -> controller.getRawAxis(Constants.rotateYAxis) * Constants.rotateYAxisScalar
+        
+        shootCommand = new ShootCommand(
+                shooter,
+                () -> controller.getRawButton(1),
+                () -> controller.getRawButton(2));
         
         swerveDrive.setDefaultCommand(swerveCommand);
+        shooter.setDefaultCommand(shootCommand);
     }
     
     public Command getAutonomousCommand () {
-        return new SequentialCommandGroup(
-                new AutonDrive(swerveDrive, 180, 24*10, 0.4),
-                new AutonDrive(swerveDrive, 90, 48*10, 0.4));
+        return new AutonDrive(swerveDrive, 0, 12, 0.3);
     }
     
 }

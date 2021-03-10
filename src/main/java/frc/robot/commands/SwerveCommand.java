@@ -11,6 +11,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.SparkDrive;
 
+/**
+ * @author Gabriel Seaver
+ */
 public class SwerveCommand extends CommandBase {
     
     private final SparkDrive swerveDrive;
@@ -18,15 +21,15 @@ public class SwerveCommand extends CommandBase {
     private final DoubleSupplier
             dirMoveXAxis,
             dirMoveYAxis,
-            rotXAxis,
-            rotYAxis;
+            rotXAxis;
+            //rotYAxis
     
     public SwerveCommand (
             SparkDrive _swerveDrive,
             DoubleSupplier _dirMoveXAxis,
             DoubleSupplier _dirMoveYAxis,
-            DoubleSupplier _rotXAxis,
-            DoubleSupplier _rotYAxis) {
+            DoubleSupplier _rotXAxis) {
+            //DoubleSupplier _rotYAxis
         
         swerveDrive = _swerveDrive;
         
@@ -35,7 +38,7 @@ public class SwerveCommand extends CommandBase {
         dirMoveXAxis = _dirMoveXAxis;
         dirMoveYAxis = _dirMoveYAxis;
         rotXAxis = _rotXAxis;
-        rotYAxis = _rotYAxis;
+        //rotYAxis = _rotYAxis;
     }
     
     @Override
@@ -48,18 +51,22 @@ public class SwerveCommand extends CommandBase {
         double directMoveXAxis = dirMoveXAxis.getAsDouble();
         double directMoveYAxis = dirMoveYAxis.getAsDouble();
         double rotateXAxis = rotXAxis.getAsDouble();
-        double rotateYAxis = rotYAxis.getAsDouble();
+        //double rotateYAxis = rotYAxis.getAsDouble();
         
         if (Math.abs(directMoveXAxis) < Constants.joystickDeadzone && Math.abs(directMoveYAxis) < Constants.joystickDeadzone) {
             directMoveXAxis = 0;
             directMoveYAxis = 0;
         }
-        if (Math.abs(rotateXAxis) < Constants.joystickDeadzone && Math.abs(rotateYAxis) < Constants.joystickDeadzone) {
+        if (Math.abs(rotateXAxis) < Constants.joystickDeadzone) {
             rotateXAxis = 0;
-            rotateYAxis = 0;
         }
+        // if (Math.abs(rotateXAxis) < Constants.joystickDeadzone && Math.abs(rotateYAxis) < Constants.joystickDeadzone) {
+        //     rotateXAxis = 0;
+        //     rotateYAxis = 0;
+        // }
         
-        swerveDrive.fieldRelativeInputDrive(directMoveXAxis, directMoveYAxis, rotateXAxis, rotateYAxis);
+        // TODO: Something
+        swerveDrive.inputDrive(directMoveXAxis, directMoveYAxis, rotateXAxis);
     }
     
     @Override
