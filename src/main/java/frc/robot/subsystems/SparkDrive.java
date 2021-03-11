@@ -12,7 +12,6 @@ import frc.team1711.swerve.util.Vector;
 public class SparkDrive extends AutoSwerveDrive {
     
     private final AHRS gyro;
-    private boolean gyroReset;
     
     public SparkDrive () {
         super(new SparkWheel(Constants.flRotationMotor, Constants.flDirectionMotor),
@@ -23,15 +22,9 @@ public class SparkDrive extends AutoSwerveDrive {
         
         setMaxOutput(Constants.maxWheelSpeed);
         gyro = new AHRS();
-        gyroReset = false;
     }
     
     public void fieldRelativeInputDrive (double strafeX, double strafeY, double steerX, double steerY) {
-        
-        if (!gyroReset) {
-            gyro.reset();
-            gyroReset = true;
-        }
         
         // Strafing
         final Vector strafeInput = new Vector(strafeX, strafeY);
@@ -49,18 +42,29 @@ public class SparkDrive extends AutoSwerveDrive {
         // to interval [-1, 1), representing steering speed
         double moveRotation = fieldRelativeToRobotRelative(targetRotation);
         if (moveRotation >= 180) moveRotation -= 360;
-        moveRotation /= 180;
-        moveRotation *= Math.min(accountForDeadband(steerInput.getMagnitude()), 1);
         
-        System.out.println("Gyro: " + gyro.getAngle());
-        System.out.println("Magnitude: " + fieldStrafeInput.getMagnitude());
-        System.out.println("Rotation: " + (int)fieldStrafeInput.getRotationDegrees());
+        // Whether or not moveRotation is negative (to prevent sqrt of negative number)
+        final int reverse = moveRotation < 0 ? -1 : 1;
+        
+        moveRotation = Math.sqrt(reverse * accountForDeadband(steerInput.getMagnitude()) * moveRotation / 180);
+        moveRotation = Math.max(Math.min(reverse * moveRotation, 1), -1);
         
         // Runs input drive
         super.inputDrive(
-                0,// fieldStrafeInput.getX(),
-                0,// fieldStrafeInput.getY(),
-                steerX);
+                fieldStrafeInput.getX(),
+                fieldStrafeInput.getY(),
+                moveRotation);
+    }
+    
+    public void resetGyro () {
+        gyro.reset();
+    }
+    
+    public void resetEncoders () {
+        ((SparkWheel)flWheel).resetEncoders();
+        ((SparkWheel)frWheel).resetEncoders();
+        ((SparkWheel)rlWheel).resetEncoders();
+        ((SparkWheel)rrWheel).resetEncoders();
     }
     
     private double fieldRelativeToRobotRelative (double rotation) {

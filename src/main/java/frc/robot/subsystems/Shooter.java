@@ -13,7 +13,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
-import frc.robot.util.ShooterPIDHelp;
+import frc.robot.util.PIDHelp;
 
 /**
  * Adapted from https://github.com/frc1711/Nerites/blob/master/src/main/java/frc/robot/subsystems/Shooter.java
@@ -57,19 +57,19 @@ public class Shooter extends SubsystemBase {
     }
     
     public double getRPM () {
-        return ShooterPIDHelp.getRPM(shooterTalonLeft);
+        return PIDHelp.getRPM(shooterTalonLeft);
     }
     
     public double getVelocity () {
-        return ShooterPIDHelp.getVelocity(shooterTalonLeft);
+        return PIDHelp.getVelocity(shooterTalonLeft);
     }
     
     public void toVelocity (double velocity) {
-        ShooterPIDHelp.toVelocity(shooterTalonLeft, velocity);
+        PIDHelp.toVelocity(shooterTalonLeft, velocity);
     }
     
     public void toRPM (double RPM) {
-        ShooterPIDHelp.toRPM(shooterTalonLeft, RPM);
+        PIDHelp.toRPM(shooterTalonLeft, RPM);
     }
     
     //FLY-WHEEL KICKER

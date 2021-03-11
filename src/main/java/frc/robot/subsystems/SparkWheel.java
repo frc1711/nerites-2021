@@ -10,6 +10,7 @@ import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import frc.robot.Constants;
 import frc.team1711.swerve.subsystems.AutoSwerveWheel;
@@ -38,6 +39,9 @@ public class SparkWheel extends AutoSwerveWheel {
         rotationDrivePID.setD(Constants.wheelkD);
         
         driveEncoder = directDrive.getEncoder();
+        
+        directDrive.setIdleMode(IdleMode.kBrake);
+        rotationDrive.setIdleMode(IdleMode.kBrake);
     }
     
     @Override
@@ -47,9 +51,6 @@ public class SparkWheel extends AutoSwerveWheel {
     
     @Override
     protected double getPositionDifference () {
-        // TODO: .getPosition() may only get the counts
-        // for the neo encoder, check github, do a full rev
-        // and watch counts
         return driveEncoder.getPosition() * countsToInches;
     }
     
@@ -88,6 +89,11 @@ public class SparkWheel extends AutoSwerveWheel {
     @Override
     protected void stopSteering () {
         rotationDrivePID.setReference(steerEncoder.getPosition(), ControlType.kPosition);
+    }
+    
+    public void resetEncoders () {
+        resetDriveEncoder();
+        steerEncoder.setPosition(0);
     }
     
 }

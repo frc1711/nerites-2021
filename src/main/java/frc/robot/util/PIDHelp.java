@@ -14,10 +14,10 @@ import com.revrobotics.CANSparkMax;
 
 /**
  * Adapted from https://github.com/frc1711/Nerites/blob/master/src/main/java/frc/robot/helper_classes/PIDHelp.java.
- * @author Lou DeZeeuw (Original Author)
- * @author Gabriel Seaver (Adaptation)
+ * @author Lou DeZeeuw (original)
+ * @author Gabriel Seaver (adaptation)
  */
-public class ShooterPIDHelp {
+public class PIDHelp {
     
     public static double getRPM (WPI_TalonSRX talon, int pidSlot) {
         double nativeUnitVelocity = talon.getSelectedSensorVelocity(pidSlot);

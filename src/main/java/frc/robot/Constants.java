@@ -8,15 +8,24 @@ public final class Constants {
     
     // Speed and hardware constants
     public static final double
-            driveSpeed = .2,
+            driveSpeed = .08,
             turnSpeed = .05,
             maxWheelSpeed = .7,
             
-            flyWheelSpeed = .75,
-            shooterSpeed = 8700,
-            shooterSpeedBound = 200,
+            maxTurnInputSpeed = 0.6,
+            turnInputSpeedScalar = 1.5,
             
-            widthToHeightWheelbaseRatio = .851;
+            shooterSpeed = 8700,
+            shooterUBound = shooterSpeed + 2000,
+            shooterLBound = shooterSpeed - 125,
+            
+            widthToHeightWheelbaseRatio = .851,
+            
+            flyWheelSpeed = .75,
+            
+            pulleySpeed = .35,
+            
+            intakeSpeed = .45;
     
     // PID
     public static final double
@@ -27,7 +36,12 @@ public final class Constants {
             shooterkP = .0075,
             shooterkI = .0001,
             shooterkD = shooterkP * 5,
-            shooterkF = .09;
+            shooterkF = .09,
+            
+            pulleykP = 0.05,
+            pulleykI = 0.05,
+            pulleykD = pulleykP * 5,
+            pulleykF = 0.45;
     
     // CAN IDs
     public static final int
@@ -46,7 +60,17 @@ public final class Constants {
             shooterLeft = 0,
             shooterRight = 5,
             
-            flyWheel = 8;
+            flyWheel = 8,
+            
+            intake = 9,
+            
+            pulley = 7;
+    
+    // DIO
+    public static final int
+            bottomSensor = 0,
+            middleSensor = 1,
+            topSensor = 2;
     
     // OI
     public static final int
