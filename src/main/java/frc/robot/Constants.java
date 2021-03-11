@@ -16,7 +16,7 @@ public final class Constants {
             shooterSpeed = 8700,
             shooterSpeedBound = 200,
             
-            widthToHeightWheelbaseRatio = 1/.851; // TODO: Fix this
+            widthToHeightWheelbaseRatio = .851;
     
     // PID
     public static final double

@@ -64,12 +64,20 @@ public class SparkWheel extends AutoSwerveWheel {
     @Override
     protected void setDirection (double targetDirection) {
         // Gets the desired change in direction, and places on the interval [-180, 180)
-        double moveDirection = targetDirection - steerEncoder.getPosition() * 360;
+        double moveDirection = targetDirection - getRawDirection() * 360;
         while (moveDirection < -180) moveDirection += 360;
         while (moveDirection >= 180) moveDirection -= 360;
         
         // Sets the PID loop
-        rotationDrivePID.setReference(-(moveDirection / 360 + steerEncoder.getPosition()), ControlType.kPosition);
+        setRawDirection(moveDirection / 360 + getRawDirection());
+    }
+    
+    private void setRawDirection (double dir) {
+        rotationDrivePID.setReference(-dir, ControlType.kPosition);
+    }
+    
+    private double getRawDirection () {
+        return -steerEncoder.getPosition();
     }
     
     @Override
