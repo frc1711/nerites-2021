@@ -14,10 +14,10 @@ public class SparkDrive extends AutoSwerveDrive {
     private final AHRS gyro;
     
     public SparkDrive () {
-        super(new SparkWheel(Constants.flRotationMotor, Constants.flDirectionMotor),
-                new SparkWheel(Constants.frRotationMotor, Constants.frDirectionMotor),
-                new SparkWheel(Constants.rlRotationMotor, Constants.rlDirectionMotor),
-                new SparkWheel(Constants.rrRotationMotor, Constants.rrDirectionMotor),
+        super(  new SparkWheel(Constants.flSteerMotor, Constants.flDriveMotor, Constants.flSteerEncoder),
+                new SparkWheel(Constants.frSteerMotor, Constants.frDriveMotor, Constants.frSteerEncoder),
+                new SparkWheel(Constants.rlSteerMotor, Constants.rlDriveMotor, Constants.rlSteerEncoder),
+                new SparkWheel(Constants.rrSteerMotor, Constants.rrDriveMotor, Constants.rrSteerEncoder),
                 Constants.widthToHeightWheelbaseRatio);
         
         setMaxOutput(Constants.maxWheelSpeed);
@@ -58,13 +58,6 @@ public class SparkDrive extends AutoSwerveDrive {
     
     public void resetGyro () {
         gyro.reset();
-    }
-    
-    public void resetEncoders () {
-        ((SparkWheel)flWheel).resetEncoders();
-        ((SparkWheel)frWheel).resetEncoders();
-        ((SparkWheel)rlWheel).resetEncoders();
-        ((SparkWheel)rrWheel).resetEncoders();
     }
     
     private double fieldRelativeToRobotRelative (double rotation) {

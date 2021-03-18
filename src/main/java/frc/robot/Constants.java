@@ -15,9 +15,14 @@ public final class Constants {
             maxTurnInputSpeed = 0.6,
             turnInputSpeedScalar = 1.5,
             
-            shooterSpeed = 8700,
-            shooterUBound = shooterSpeed + 2000,
-            shooterLBound = shooterSpeed - 125,
+            // shooterSpeed = 12000, // 4th zone ???
+            shooterSpeed = 12000, // 3rd zone ???
+            // shooterSpeed = 9500, // 2nd zone WORKS
+            // shooterSpeed = 12000, // 1st zone WORKS
+            
+            // shooterSpeed = 8700, // 0.0034 rps = 1 unit
+            // shooterUBound = shooterSpeed + 2000,
+            // shooterLBound = shooterSpeed - 125,
             
             widthToHeightWheelbaseRatio = .851,
             
@@ -33,10 +38,10 @@ public final class Constants {
             wheelkI = 0,
             wheelkD = 0,
             
-            shooterkP = .0075,
-            shooterkI = .0001,
-            shooterkD = shooterkP * 5,
-            shooterkF = .09,
+            // shooterkP = .0075,
+            // shooterkI = .0001,
+            // shooterkD = shooterkP * 5,
+            // shooterkF = .09,
             
             pulleykP = 0.05,
             pulleykI = 0.05,
@@ -45,17 +50,21 @@ public final class Constants {
     
     // CAN IDs
     public static final int
-            flRotationMotor = 12,
-            flDirectionMotor = 2,
+            flSteerMotor = 12,
+            flDriveMotor = 2,
+            flSteerEncoder = 17,
             
-            frRotationMotor = 4,
-            frDirectionMotor = 3,
+            frSteerMotor = 4,
+            frDriveMotor = 3,
+            frSteerEncoder = 19,
             
-            rlRotationMotor = 1,
-            rlDirectionMotor = 13,
+            rlSteerMotor = 1,
+            rlDriveMotor = 13,
+            rlSteerEncoder = 16,
             
-            rrRotationMotor = 14,
-            rrDirectionMotor = 15,
+            rrSteerMotor = 14,
+            rrDriveMotor = 15,
+            rrSteerEncoder = 18,
             
             shooterLeft = 0,
             shooterRight = 5,
@@ -90,6 +99,8 @@ public final class Constants {
     public static final double
             joystickDeadzone = .08;
     
-    public static final int mainController = 0;
+    public static final int
+            driveController = 0,
+            shootController = 1;
     
 }

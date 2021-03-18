@@ -24,10 +24,11 @@ public class RobotContainer {
     private final Intake intake;
     private final Pulley pulley;
     
-    private final Joystick controller;
+    private final Joystick driveController, shootController;
     
     public RobotContainer () {
-        controller = new Joystick(Constants.mainController);
+        driveController = new Joystick(Constants.driveController);
+        shootController = driveController; //new Joystick(Constants.shootController);
         
         swerveDrive = new SparkDrive();
         shooter = new Shooter();
@@ -36,12 +37,12 @@ public class RobotContainer {
         
         swerveCommand = new SwerveCommand(
                 swerveDrive,
-                () -> controller.getRawAxis(Constants.directMoveXAxis) * Constants.directMoveXAxisScalar,
-                () -> controller.getRawAxis(Constants.directMoveYAxis) * Constants.directMoveYAxisScalar,
-                () -> controller.getRawAxis(Constants.rotateXAxis) * Constants.rotateXAxisScalar,
-                () -> controller.getRawAxis(Constants.rotateYAxis) * Constants.rotateYAxisScalar);
+                () -> driveController.getRawAxis(Constants.directMoveXAxis) * Constants.directMoveXAxisScalar,
+                () -> driveController.getRawAxis(Constants.directMoveYAxis) * Constants.directMoveYAxisScalar,
+                () -> driveController.getRawAxis(Constants.rotateXAxis) * Constants.rotateXAxisScalar,
+                () -> driveController.getRawAxis(Constants.rotateYAxis) * Constants.rotateYAxisScalar);
         
-        centralSystem = new CentralSystem(pulley, shooter, intake, controller);
+        centralSystem = new CentralSystem(pulley, shooter, intake, shootController);
         
         swerveDrive.setDefaultCommand(swerveCommand);
         shooter.setDefaultCommand(centralSystem);
@@ -53,7 +54,6 @@ public class RobotContainer {
     
     public void onTestInit () {
         swerveDrive.resetGyro();
-        swerveDrive.resetEncoders();
     }
     
 }

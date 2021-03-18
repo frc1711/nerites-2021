@@ -4,14 +4,15 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.AlternateEncoderType;
+import com.ctre.phoenix.sensors.AbsoluteSensorRange;
+import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import com.revrobotics.CANEncoder;
-import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
-import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 
+import edu.wpi.first.wpilibj.controller.PIDController;
 import frc.robot.Constants;
 import frc.team1711.swerve.subsystems.AutoSwerveWheel;
 
@@ -22,26 +23,30 @@ public class SparkWheel extends AutoSwerveWheel {
     
     private static final double countsToInches = 12.566 / 8.16 / 42;
     
-    private final CANSparkMax directDrive, rotationDrive;
-    private final CANPIDController rotationDrivePID;
-    private final CANEncoder steerEncoder, driveEncoder;
+    private final CANSparkMax driveController, steerController;
+    private final PIDController steerPID;
+    private final CANCoder steerEncoder;
+    private final CANEncoder driveEncoder;
     
-    public SparkWheel (int rotationID, int directionID) {
-        rotationDrive = new CANSparkMax(rotationID, CANSparkMaxLowLevel.MotorType.kBrushless);
-        directDrive = new CANSparkMax(directionID, CANSparkMaxLowLevel.MotorType.kBrushless);
+    public SparkWheel (int rotationID, int directionID, int steerEncoderID) {
+        steerController = new CANSparkMax(rotationID, CANSparkMaxLowLevel.MotorType.kBrushless);
+        driveController = new CANSparkMax(directionID, CANSparkMaxLowLevel.MotorType.kBrushless);
         
-        steerEncoder = rotationDrive.getAlternateEncoder(AlternateEncoderType.kQuadrature, 4096);
-        rotationDrivePID = rotationDrive.getPIDController();
-        rotationDrivePID.setFeedbackDevice(steerEncoder);
+        driveController.setIdleMode(IdleMode.kBrake);
+        steerController.setIdleMode(IdleMode.kBrake);
         
-        rotationDrivePID.setP(Constants.wheelkP);
-        rotationDrivePID.setI(Constants.wheelkI);
-        rotationDrivePID.setD(Constants.wheelkD);
+        steerEncoder = new CANCoder(steerEncoderID);
+        final CANCoderConfiguration steerEncoderConfig = new CANCoderConfiguration();
+        steerEncoderConfig.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;
+        steerEncoderConfig.sensorDirection = false;
+        steerEncoder.configAllSettings(steerEncoderConfig);
+        steerEncoder.setPositionToAbsolute(Integer.MAX_VALUE);
+        driveEncoder = driveController.getEncoder();
         
-        driveEncoder = directDrive.getEncoder();
-        
-        directDrive.setIdleMode(IdleMode.kBrake);
-        rotationDrive.setIdleMode(IdleMode.kBrake);
+        steerPID = new PIDController(
+            Constants.wheelkP,
+            Constants.wheelkI,
+            Constants.wheelkD);
     }
     
     @Override
@@ -56,7 +61,7 @@ public class SparkWheel extends AutoSwerveWheel {
     
     @Override
     protected double getDirection () {
-        double direction = -steerEncoder.getPosition() * 360;
+        double direction = getRawDirection() * 360;
         while (direction < 0) direction += 360;
         while (direction >= 360) direction -= 360;
         return direction;
@@ -74,26 +79,22 @@ public class SparkWheel extends AutoSwerveWheel {
     }
     
     private void setRawDirection (double dir) {
-        rotationDrivePID.setReference(-dir, ControlType.kPosition);
+        double setSpeed = steerPID.calculate(getRawDirection(), dir);
+        steerController.set(setSpeed);
     }
     
     private double getRawDirection () {
-        return -steerEncoder.getPosition();
+        return steerEncoder.getAbsolutePosition() / 360;
     }
     
     @Override
     protected void setDriveSpeed (double speed) {
-        directDrive.set(speed);
+        driveController.set(speed);
     }
     
     @Override
     protected void stopSteering () {
-        rotationDrivePID.setReference(steerEncoder.getPosition(), ControlType.kPosition);
-    }
-    
-    public void resetEncoders () {
-        resetDriveEncoder();
-        steerEncoder.setPosition(0);
+        steerController.set(0);
     }
     
 }

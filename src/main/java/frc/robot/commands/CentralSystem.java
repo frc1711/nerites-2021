@@ -20,6 +20,7 @@ import frc.robot.util.ballSystem.BallHandler;
 // TODO: Fix this
 
 /**
+ * Adapted from https://github.com/frc1711/Nerites/blob/master/src/main/java/frc/robot/commands/CentralSystem.java.
  * @author Lou DeZeeuw (original)
  * @author Gabriel Seaver (adaptation)
  */
@@ -121,7 +122,7 @@ public class CentralSystem extends CommandBase {
         }
         
         if (hold) {
-            shooter.toVelocity(Constants.shooterSpeed);
+            shooter.shoot(Constants.shooterSpeed);
             shootMode = true;
         } else {
             shooter.stopShooter();
@@ -147,10 +148,7 @@ public class CentralSystem extends CommandBase {
     }
     
     private void flyWheel () {
-        if(!manual &&
-                stick.getRawButton(2) &&
-                shooter.getVelocity() > Constants.shooterLBound &&
-                shooter.getVelocity() < Constants.shooterUBound) {
+        if (!manual && stick.getRawButton(2)) {
             shooter.runFlyWheel();
         } else {
             shooter.stopFlyWheel();
@@ -158,8 +156,7 @@ public class CentralSystem extends CommandBase {
     }
     
     private void removeAllBalls (Boolean bool) {
-        if (bool)
-            ballHandler.removeHighestBall();
+        if (bool) ballHandler.removeHighestBall();
     }
     
     private void intake () {
@@ -199,9 +196,9 @@ public class CentralSystem extends CommandBase {
     
     private void manualShooter () {
         if (stick.getRawButton(1))
-            shooter.toVelocity(Constants.shooterSpeed);
+            shooter.shoot(Constants.shooterSpeed);
         else
-            shooter.toVelocity(0);
+            shooter.shoot(0);
     }
     
     private void defaultButtons () {

@@ -20,14 +20,14 @@ import frc.robot.util.PIDHelp;
  * @author Lou DeZeeuw
  * @author Gabriel Seaver
  */
-public class Shooter extends SubsystemBase {
+public class PIDShooter extends SubsystemBase {
     
     private WPI_TalonSRX shooterTalonLeft;
     private WPI_TalonSRX shooterTalonRight;
     
     private WPI_TalonSRX flyWheel;
     
-    public Shooter () {
+    public PIDShooter () {
         shooterTalonLeft = new WPI_TalonSRX(Constants.shooterLeft);
         shooterTalonRight = new WPI_TalonSRX(Constants.shooterRight);
         flyWheel = new WPI_TalonSRX(Constants.flyWheel);
@@ -37,16 +37,43 @@ public class Shooter extends SubsystemBase {
         
         shooterTalonRight.setInverted(true);
         shooterTalonRight.set(ControlMode.Follower, Constants.shooterLeft);
+        
+        // shooterTalonLeft.config_kP(0, Constants.shooterkP);
+        // shooterTalonLeft.config_kI(0, Constants.shooterkI);
+        // shooterTalonLeft.config_kD(0, Constants.shooterkD);
+        // shooterTalonLeft.config_kF(0, Constants.shooterkF);
     }
     
+    //SHOOTER MOTORS
     public void shoot (double speed) {
-        PIDHelp.toVelocity(shooterTalonLeft, speed);
+        shooterTalonLeft.set(speed);
     }
     
     public void stopShooter () {
-        shooterTalonLeft.set(0);
+        shooterTalonLeft.set(ControlMode.PercentOutput, 0);
     }
     
+    public double getDutyCycle () {
+        return shooterTalonLeft.getMotorOutputVoltage();
+    }
+    
+    public double getRPM () {
+        return PIDHelp.getRPM(shooterTalonLeft);
+    }
+    
+    public double getVelocity () {
+        return PIDHelp.getVelocity(shooterTalonLeft);
+    }
+    
+    public void toVelocity (double velocity) {
+        PIDHelp.toVelocity(shooterTalonLeft, velocity);
+    }
+    
+    public void toRPM (double RPM) {
+        PIDHelp.toRPM(shooterTalonLeft, RPM);
+    }
+    
+    //FLY-WHEEL KICKER
     public void runFlyWheel () {
         flyWheel.set(Constants.flyWheelSpeed);
     }
