@@ -56,6 +56,13 @@ public class SparkDrive extends AutoSwerveDrive {
                 moveRotation);
     }
     
+    public void resetAbsoluteEncoders () {
+        ((SparkWheel)flWheel).configAbsoluteEncoder();
+        ((SparkWheel)frWheel).configAbsoluteEncoder();
+        ((SparkWheel)rlWheel).configAbsoluteEncoder();
+        ((SparkWheel)rrWheel).configAbsoluteEncoder();
+    }
+    
     public void resetGyro () {
         gyro.reset();
     }

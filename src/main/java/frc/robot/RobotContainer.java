@@ -54,6 +54,11 @@ public class RobotContainer {
     
     public void onTestInit () {
         swerveDrive.resetGyro();
+        swerveDrive.resetAbsoluteEncoders();
+        System.out.println("The gyro has been reset and the CANCoders");
+        System.out.println("have been reconfigured (the absolute positions");
+        System.out.println("have been zeroed to their currect directions).");
+        System.out.println("\nPlease turn the robot off and on again.");
     }
     
 }

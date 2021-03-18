@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
+import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
@@ -27,6 +28,7 @@ public class SparkWheel extends AutoSwerveWheel {
     private final PIDController steerPID;
     private final CANCoder steerEncoder;
     private final CANEncoder driveEncoder;
+    private final double absolutePositionOffset;
     
     public SparkWheel (int rotationID, int directionID, int steerEncoderID) {
         steerController = new CANSparkMax(rotationID, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -36,10 +38,11 @@ public class SparkWheel extends AutoSwerveWheel {
         steerController.setIdleMode(IdleMode.kBrake);
         
         steerEncoder = new CANCoder(steerEncoderID);
-        final CANCoderConfiguration steerEncoderConfig = new CANCoderConfiguration();
-        steerEncoderConfig.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;
-        steerEncoderConfig.sensorDirection = false;
-        steerEncoder.configAllSettings(steerEncoderConfig);
+        
+        // Custom param 0 used to store getAbsolutePosition() offset,
+        // with a scaling factor of 1:100 for more precision
+        absolutePositionOffset = steerEncoder.configGetCustomParam(0) / 100.;
+        
         steerEncoder.setPositionToAbsolute(Integer.MAX_VALUE);
         driveEncoder = driveController.getEncoder();
         
@@ -84,7 +87,23 @@ public class SparkWheel extends AutoSwerveWheel {
     }
     
     private double getRawDirection () {
-        return steerEncoder.getAbsolutePosition() / 360;
+        return (steerEncoder.getPosition() - absolutePositionOffset) / 360;
+    }
+    
+    public void configAbsoluteEncoder () {
+        // CANCoder configurations
+        CANCoderConfiguration config = new CANCoderConfiguration();
+        config.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
+        config.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;
+        config.sensorDirection = false;
+        
+        // Custom param 0 used to store getAbsolutePosition() offset,
+        // this value should be set to the current absolute
+        // position in order to "zero" the encoders (with scaling
+        // factor of 1:100 for more precision)
+        config.customParam0 = (int)(steerEncoder.getAbsolutePosition() * 100);
+        
+        steerEncoder.configAllSettings(config);
     }
     
     @Override
