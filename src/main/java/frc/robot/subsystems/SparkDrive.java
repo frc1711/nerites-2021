@@ -24,36 +24,38 @@ public class SparkDrive extends AutoSwerveDrive {
         gyro = new AHRS();
     }
     
-    public void fieldRelativeInputDrive (double strafeX, double strafeY, double steerX, double steerY) {
+    public void fieldRelativeInputDrive (double strafeX, double strafeY, double steerX) {
         
         // Strafing
         final Vector strafeInput = new Vector(strafeX, strafeY);
         final Vector fieldStrafeInput = strafeInput.toRotationDegrees(fieldRelativeToRobotRelative(strafeInput.getRotationDegrees()));
         
+        
+        // NO FIELD RELATIVE TURNING
         // Turning
         // Gets the desired field-relative rotation of the robot
-        final Vector steerInput = new Vector(steerX, steerY);
-        double targetRotation = 0;
-        if (accountForDeadband(steerInput.getMagnitude()) != 0)
-            targetRotation = steerInput.getRotationDegrees();
+        // final Vector steerInput = new Vector(steerX, steerY);
+        // double targetRotation = 0;
+        // if (accountForDeadband(steerInput.getMagnitude()) != 0)
+        //     targetRotation = steerInput.getRotationDegrees();
         
-        // Maps the rotational difference between current robot rotation
-        // and target (based on field relative input) on interval [0, 360)
-        // to interval [-1, 1), representing steering speed
-        double moveRotation = fieldRelativeToRobotRelative(targetRotation);
-        if (moveRotation >= 180) moveRotation -= 360;
+        // // Maps the rotational difference between current robot rotation
+        // // and target (based on field relative input) on interval [0, 360)
+        // // to interval [-1, 1), representing steering speed
+        // double moveRotation = fieldRelativeToRobotRelative(targetRotation);
+        // if (moveRotation >= 180) moveRotation -= 360;
         
-        // Whether or not moveRotation is negative (to prevent sqrt of negative number)
-        final int reverse = moveRotation < 0 ? -1 : 1;
+        // // Whether or not moveRotation is negative (to prevent sqrt of negative number)
+        // final int reverse = moveRotation < 0 ? -1 : 1;
         
-        moveRotation = Math.sqrt(reverse * accountForDeadband(steerInput.getMagnitude()) * moveRotation / 180);
-        moveRotation = Math.max(Math.min(reverse * moveRotation, 1), -1);
+        // moveRotation = Math.sqrt(reverse * accountForDeadband(steerInput.getMagnitude()) * moveRotation / 180);
+        // moveRotation = Math.max(Math.min(reverse * moveRotation, 1), -1);
         
         // Runs input drive
         super.inputDrive(
                 fieldStrafeInput.getX(),
                 fieldStrafeInput.getY(),
-                moveRotation);
+                steerX);
     }
     
     public void resetAbsoluteEncoders () {

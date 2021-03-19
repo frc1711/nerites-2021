@@ -39,8 +39,7 @@ public class RobotContainer {
                 swerveDrive,
                 () -> driveController.getRawAxis(Constants.directMoveXAxis) * Constants.directMoveXAxisScalar,
                 () -> driveController.getRawAxis(Constants.directMoveYAxis) * Constants.directMoveYAxisScalar,
-                () -> driveController.getRawAxis(Constants.rotateXAxis) * Constants.rotateXAxisScalar,
-                () -> driveController.getRawAxis(Constants.rotateYAxis) * Constants.rotateYAxisScalar);
+                () -> driveController.getRawAxis(Constants.rotateXAxis) * Constants.rotateXAxisScalar);
         
         centralSystem = new CentralSystem(pulley, shooter, intake, shootController);
         

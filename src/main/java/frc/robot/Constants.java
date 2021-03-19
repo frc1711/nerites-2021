@@ -91,10 +91,7 @@ public final class Constants {
     
     public static final int
             rotateXAxis = 4,
-            rotateXAxisScalar = 1,
-            
-            rotateYAxis = 5,
-            rotateYAxisScalar = -1;
+            rotateXAxisScalar = 1;
     
     public static final double
             joystickDeadzone = .08;

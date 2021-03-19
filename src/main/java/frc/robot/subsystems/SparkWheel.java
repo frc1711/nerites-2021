@@ -41,7 +41,8 @@ public class SparkWheel extends AutoSwerveWheel {
         
         // Custom param 0 used to store getAbsolutePosition() offset,
         // with a scaling factor of 1:100 for more precision
-        absolutePositionOffset = steerEncoder.configGetCustomParam(0) / 100.;
+        absolutePositionOffset = getAbsoluteOffset(steerEncoder.configGetCustomParam(0));
+        System.out.println(absolutePositionOffset);
         
         steerEncoder.setPositionToAbsolute(Integer.MAX_VALUE);
         driveEncoder = driveController.getEncoder();
@@ -50,6 +51,41 @@ public class SparkWheel extends AutoSwerveWheel {
             Constants.wheelkP,
             Constants.wheelkI,
             Constants.wheelkD);
+    }
+    
+    
+    
+    // Configuration stuff for absolute encoders
+    public void configAbsoluteEncoder () {
+        // CANCoder configurations
+        CANCoderConfiguration config = new CANCoderConfiguration();
+        config.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
+        config.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;
+        config.sensorDirection = false;
+        
+        // Custom param 0 used to store getAbsolutePosition() offset,
+        // this value should be set to the current absolute
+        // position in order to "zero" the encoders (with scaling
+        // factor of 1:100 for more precision)
+        config.customParam0 = createNewAbsoluteOffset(steerEncoder.getAbsolutePosition());
+        
+        steerEncoder.configAllSettings(config);
+    }
+    
+    private double getAbsoluteOffset (int storedOffsetValue) {
+        return storedOffsetValue / 100.;
+    }
+    
+    private int createNewAbsoluteOffset (double absolutePosition) {
+        return (int)(absolutePosition * 100);
+    }
+    
+    
+    
+    // Driving
+    @Override
+    protected void setDriveSpeed (double speed) {
+        driveController.set(speed);
     }
     
     @Override
@@ -62,58 +98,36 @@ public class SparkWheel extends AutoSwerveWheel {
         return driveEncoder.getPosition() * countsToInches;
     }
     
+    
+    
+    // Steering
+    @Override
+    protected void stopSteering () {
+        steerController.set(0);
+    }
+    
     @Override
     protected double getDirection () {
-        double direction = getRawDirection() * 360;
+        double direction = getRawDirection();
         while (direction < 0) direction += 360;
         while (direction >= 360) direction -= 360;
         return direction;
     }
     
+    private double getRawDirection () {
+        return -(steerEncoder.getAbsolutePosition() - absolutePositionOffset);
+    }
+    
     @Override
     protected void setDirection (double targetDirection) {
         // Gets the desired change in direction, and places on the interval [-180, 180)
-        double moveDirection = targetDirection - getRawDirection() * 360;
+        double moveDirection = targetDirection - getDirection();
         while (moveDirection < -180) moveDirection += 360;
         while (moveDirection >= 180) moveDirection -= 360;
         
         // Sets the PID loop
-        setRawDirection(moveDirection / 360 + getRawDirection());
-    }
-    
-    private void setRawDirection (double dir) {
-        double setSpeed = steerPID.calculate(getRawDirection(), dir);
-        steerController.set(setSpeed);
-    }
-    
-    private double getRawDirection () {
-        return (steerEncoder.getPosition() - absolutePositionOffset) / 360;
-    }
-    
-    public void configAbsoluteEncoder () {
-        // CANCoder configurations
-        CANCoderConfiguration config = new CANCoderConfiguration();
-        config.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
-        config.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;
-        config.sensorDirection = false;
-        
-        // Custom param 0 used to store getAbsolutePosition() offset,
-        // this value should be set to the current absolute
-        // position in order to "zero" the encoders (with scaling
-        // factor of 1:100 for more precision)
-        config.customParam0 = (int)(steerEncoder.getAbsolutePosition() * 100);
-        
-        steerEncoder.configAllSettings(config);
-    }
-    
-    @Override
-    protected void setDriveSpeed (double speed) {
-        driveController.set(speed);
-    }
-    
-    @Override
-    protected void stopSteering () {
-        steerController.set(0);
+        final double setSpeed = steerPID.calculate(0, moveDirection / 360);
+        steerController.set(-setSpeed);
     }
     
 }
