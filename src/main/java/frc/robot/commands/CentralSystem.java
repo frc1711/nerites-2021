@@ -14,8 +14,8 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pulley;
 import frc.robot.subsystems.Shooter;
-import frc.robot.util.ballSystem.Ball;
-import frc.robot.util.ballSystem.BallHandler;
+import frc.robot.util.ballSystem.PowerCell;
+import frc.robot.util.ballSystem.PowerCellHandler;
 
 /**
  * Adapted from https://github.com/frc1711/Nerites/blob/master/src/main/java/frc/robot/commands/CentralSystem.java.
@@ -37,7 +37,7 @@ public class CentralSystem extends CommandBase {
 
     private final Pulley pulley;
     private final Shooter shooter;
-    private final BallHandler ballHandler;
+    private final PowerCellHandler powerCellHandler;
     private final Intake intake;
     private final Joystick stick;
 
@@ -64,7 +64,7 @@ public class CentralSystem extends CommandBase {
 
         this.timeout = 100;
         this.manual = false;
-        this.ballHandler = new BallHandler();
+        this.powerCellHandler = new PowerCellHandler();
 
         defaultButtons();
 
@@ -97,28 +97,28 @@ public class CentralSystem extends CommandBase {
 
         if (pulley.getBottomSensor() && !created) {
 
-            ballHandler.addBall(new Ball());
+            powerCellHandler.addPowerCell(new PowerCell());
             created = true;
             timeSinceStart = 0;
 
         }
 
-        Ball lastBall = ballHandler.getLastBallHandled();
+        PowerCell lastPowerCell = powerCellHandler.getLatestPowerCell();
 
         if (pulley.getMiddleSensor()) {
 
-            if (!pastMiddle && ballHandler.numBallsInRobot() > 0) {
+            if (!pastMiddle && powerCellHandler.count() > 0) {
 
-                lastBall.setPastSensor(true);
+                lastPowerCell.setPastSensor(true);
                 pastMiddle = true;
 
             }
 
         } else pastMiddle = false;
 
-        if (ballHandler.numBallsInRobot() == 1) {
+        if (powerCellHandler.count() == 1) {
 
-            if (!lastBall.getPastSensor()) pulley.run(.25);
+            if (!lastPowerCell.isPastSensor()) pulley.run(.25);
             else {
 
                 pulley.stop();
@@ -127,9 +127,9 @@ public class CentralSystem extends CommandBase {
             }
 
         } else if (
-            ballHandler.numBallsInRobot() > 1 &&
-            ballHandler.getSecondToLastBallHandled().getPastSensor() &&
-            !lastBall.getPastSensor()) pulley.run(Constants.pulleySpeed);
+            powerCellHandler.count() > 1 &&
+            powerCellHandler.getLatestPowerCell().isPastSensor() &&
+            !lastPowerCell.isPastSensor()) pulley.run(Constants.pulleySpeed);
         else {
 
             pulley.stop();
@@ -171,14 +171,14 @@ public class CentralSystem extends CommandBase {
 
             if (!destroyed) {
 
-                ballHandler.removeHighestBall();
+                powerCellHandler.removeLastPowerCellHandled();
                 destroyed = true;
 
             }
 
         }
 
-        if (ballHandler.numBallsInRobot() == 0) shootMode = false;
+        if (powerCellHandler.count() == 0) shootMode = false;
     }
 
     private double getShooterSpeed() {
@@ -203,9 +203,9 @@ public class CentralSystem extends CommandBase {
 
     }
 
-    private void removeAllBalls(Boolean bool) {
+    private void removeAllPowerCells(Boolean bool) {
 
-        if (bool) ballHandler.removeHighestBall();
+        if (bool) powerCellHandler.removeLastPowerCellHandled();
 
     }
 
@@ -227,7 +227,7 @@ public class CentralSystem extends CommandBase {
 
         if (pulley.getBottomSensor() && !destroyed) {
 
-            ballHandler.removeHighestBall();
+            powerCellHandler.removeLastPowerCellHandled();
             destroyed = true;
 
         }
@@ -267,7 +267,7 @@ public class CentralSystem extends CommandBase {
 
         timeSinceStart++;
         flipButtons();
-        removeAllBalls(stick.getRawButton(pulleyButton));
+        removeAllPowerCells(stick.getRawButton(pulleyButton));
         intake();
         flyWheel();
 
@@ -287,7 +287,7 @@ public class CentralSystem extends CommandBase {
 
             manualPulley();
             manualShooter();
-            removeAllBalls(true);
+            removeAllPowerCells(true);
 
         }
 
