@@ -76,7 +76,7 @@ public class CentralSystem extends CommandBase {
         timeSinceStart = 0;
         pulley.stop();
         shooter.stopShooter();
-        shooter.stopFlyWheel();
+        shooter.stopKicker();
 
     }
 
@@ -198,8 +198,8 @@ public class CentralSystem extends CommandBase {
 
     private void flyWheel() {
 
-        if (!manual && stick.getRawButton(flyWheelButton)) shooter.runFlyWheel();
-        else shooter.stopFlyWheel();
+        if (!manual && stick.getRawButton(flyWheelButton)) shooter.runKicker();
+        else shooter.stopKicker();
 
     }
 
