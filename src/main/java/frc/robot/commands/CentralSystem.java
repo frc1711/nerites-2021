@@ -17,31 +17,30 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.util.ballSystem.Ball;
 import frc.robot.util.ballSystem.BallHandler;
 
-// TODO: Fix this
-
 /**
  * Adapted from https://github.com/frc1711/Nerites/blob/master/src/main/java/frc/robot/commands/CentralSystem.java.
+ *
  * @author Lou DeZeeuw (original)
  * @author Gabriel Seaver (adaptation)
  */
 public class CentralSystem extends CommandBase {
-    
+
     private static final int
-            shooterButton = 1,              // A
-            flyWheelButton = 2,             // B
-            pulleyButton = 3,               // X
-            reversePulleyButton = 4,        // Y
-            intakeButton = 5,               // Left bumper
-            outtakeButton = 6,              // right bumper
-            changeShooterModeButton = 7,    // (Left version of the menu button) OR back button
-            manualToggleButton = 8;         // Menu button OR start button
-    
+            shooterButton = 1,           // A
+            flyWheelButton = 2,          // B
+            pulleyButton = 3,            // X
+            reversePulleyButton = 4,     // Y
+            intakeButton = 5,            // Left bumper
+            outtakeButton = 6,           // Right bumper
+            changeShooterModeButton = 7, // (Left version of the menu button) OR back button
+            manualToggleButton = 8;      // Menu button OR start button
+
     private final Pulley pulley;
     private final Shooter shooter;
     private final BallHandler ballHandler;
     private final Intake intake;
     private final Joystick stick;
-    
+
     private boolean pastMiddle;
     private boolean shootMode;
     private boolean hold;
@@ -49,222 +48,263 @@ public class CentralSystem extends CommandBase {
     private boolean reverse;
     private boolean destroyed;
     private boolean manual;
-    
+
     private int timeout;
     private int timeSinceStart;
-    
     private int shooterSpeedIndex = 0;
-    
-    public CentralSystem (Pulley pulley, Shooter shooter, Intake intake, Joystick stick) {
+
+    public CentralSystem(Pulley pulley, Shooter shooter, Intake intake, Joystick stick) {
+
         addRequirements(pulley, shooter, intake);
-        
+
         this.pulley = pulley;
         this.intake = intake;
         this.shooter = shooter;
         this.stick = stick;
-        
-        timeout = 100;
-        
+
+        this.timeout = 100;
+        this.manual = false;
+        this.ballHandler = new BallHandler();
+
         defaultButtons();
-        manual = false;
-        
-        ballHandler = new BallHandler();
+
     }
-    
+
     @Override
-    public void initialize () {
-        timeSinceStart = 0; 
-        pulley.stop(); 
-        shooter.stopShooter(); 
-        shooter.stopFlyWheel(); 
+    public void initialize() {
+
+        timeSinceStart = 0;
+        pulley.stop();
+        shooter.stopShooter();
+        shooter.stopFlyWheel();
+
     }
-    
-    private void flipButtons () {
-        if (stick.getRawButtonReleased(reversePulleyButton))
-            reverse = !reverse;
-        
+
+    private void flipButtons() {
+
+        if (stick.getRawButtonReleased(reversePulleyButton)) reverse = !reverse;
+
         if (stick.getRawButtonReleased(manualToggleButton)) {
+
             manual = !manual;
             defaultButtons();
+
         }
+
     }
-    
-    private void automatedPulley () {
+
+    private void automatedPulley() {
+
         if (pulley.getBottomSensor() && !created) {
+
             ballHandler.addBall(new Ball());
             created = true;
             timeSinceStart = 0;
+
         }
-        
+
         Ball lastBall = ballHandler.getLastBallHandled();
-        
+
         if (pulley.getMiddleSensor()) {
-            if(!pastMiddle && ballHandler.numBallsInRobot() > 0) {
+
+            if (!pastMiddle && ballHandler.numBallsInRobot() > 0) {
+
                 lastBall.setPastSensor(true);
                 pastMiddle = true;
+
             }
-        } else {
-            pastMiddle = false;
-        }
-        
-        if(ballHandler.numBallsInRobot() == 1) {
-            if(!lastBall.getPastSensor()) {
-                pulley.run(.25);
-            } else {
+
+        } else pastMiddle = false;
+
+        if (ballHandler.numBallsInRobot() == 1) {
+
+            if (!lastBall.getPastSensor()) pulley.run(.25);
+            else {
+
                 pulley.stop();
                 created = false;
+
             }
-        } else if (ballHandler.numBallsInRobot() > 1 &&
-                ballHandler.getSecondToLastBallHandled().getPastSensor() &&
-                !lastBall.getPastSensor()) {
-            pulley.run(Constants.pulleySpeed);
-        } else {
+
+        } else if (
+            ballHandler.numBallsInRobot() > 1 &&
+            ballHandler.getSecondToLastBallHandled().getPastSensor() &&
+            !lastBall.getPastSensor()) pulley.run(Constants.pulleySpeed);
+        else {
+
             pulley.stop();
             created = false;
+
         }
-        
-        if (timeSinceStart > timeout)
-            pulley.stop();
+
+        if (timeSinceStart > timeout) pulley.stop();
+
     }
-    
-    private void automatedShooter () {
+
+    private void automatedShooter() {
+
         if (stick.getRawButtonReleased(shooterButton)) {
+
             shootMode = !shootMode;
             hold = !hold;
+
         }
-        
+
         if (hold) {
+
             shooter.shoot(getShooterSpeed());
             shootMode = true;
-        } else {
-            shooter.stopShooter();
-        }
-        
+
+        } else shooter.stopShooter();
+
         if (!pulley.getTopSensor()) {
+
             destroyed = false;
-            if (shootMode) {
-                pulley.run(Constants.pulleySpeed + .1);
-            }
+
+            if (shootMode) pulley.run(Constants.pulleySpeed + .1);
+
         }
-        
+
         if (pulley.getTopSensor()) {
+
             pulley.stop();
+
             if (!destroyed) {
+
                 ballHandler.removeHighestBall();
                 destroyed = true;
+
             }
+
         }
-        
-        if (ballHandler.numBallsInRobot() == 0)
-            shootMode = false;
+
+        if (ballHandler.numBallsInRobot() == 0) shootMode = false;
     }
-    
-    private double getShooterSpeed () {
+
+    private double getShooterSpeed() {
+
         return Constants.shooterSpeedModes[shooterSpeedIndex];
+
     }
-    
-    private void nextShooterSpeedMode () {
-        shooterSpeedIndex ++;
+
+    private void nextShooterSpeedMode() {
+
+        shooterSpeedIndex++;
         shooterSpeedIndex %= Constants.shooterSpeedModes.length;
-        System.out.println("ENTERING SHOOTER ZONE #"+(shooterSpeedIndex+1));
+
+        System.out.println("ENTERING SHOOTER ZONE #" + (shooterSpeedIndex + 1));
+
     }
-    
-    private void flyWheel () {
-        if (!manual && stick.getRawButton(flyWheelButton)) {
-            shooter.runFlyWheel();
-        } else {
-            shooter.stopFlyWheel();
-        }
+
+    private void flyWheel() {
+
+        if (!manual && stick.getRawButton(flyWheelButton)) shooter.runFlyWheel();
+        else shooter.stopFlyWheel();
+
     }
-    
-    private void removeAllBalls (Boolean bool) {
+
+    private void removeAllBalls(Boolean bool) {
+
         if (bool) ballHandler.removeHighestBall();
+
     }
-    
-    private void intake () {
+
+    private void intake() {
+
         if (!pulley.getBottomSensor() || manual) {
-            if (stick.getRawButton(intakeButton))
-                intake.run(Constants.intakeSpeed);
-            else if (stick.getRawButton(outtakeButton))
-                intake.run(-.75 * Constants.intakeSpeed);
-            else
-                intake.stop();
-        } else if (stick.getRawButton(outtakeButton))
-            intake.run(-.75 * Constants.intakeSpeed);
-        else
-            intake.stop();
+
+            if (stick.getRawButton(intakeButton)) intake.run(Constants.intakeSpeed);
+            else if (stick.getRawButton(outtakeButton)) intake.run(-.75 * Constants.intakeSpeed);
+            else intake.stop();
+
+        } else if (stick.getRawButton(outtakeButton)) intake.run(-.75 * Constants.intakeSpeed);
+        else intake.stop();
     }
-    
-    private void reverse () {
-        pulley.run(-1 * Constants.pulleySpeed); 
-        
+
+    private void reverse() {
+
+        pulley.run(-1 * Constants.pulleySpeed);
+
         if (pulley.getBottomSensor() && !destroyed) {
+
             ballHandler.removeHighestBall();
             destroyed = true;
+
         }
-        
-        if(!pulley.getBottomSensor())
-            destroyed = false;
+
+        if (!pulley.getBottomSensor()) destroyed = false;
+
     }
-    
-    private void manualPulley () {
-        if (stick.getRawButton(reversePulleyButton))
-            pulley.run(-1 * Constants.pulleySpeed);
-        else if (stick.getRawButton(pulleyButton))
-            pulley.run(Constants.pulleySpeed);
-        else
-            pulley.run(0);
+
+    private void manualPulley() {
+
+        if (stick.getRawButton(reversePulleyButton)) pulley.run(-1 * Constants.pulleySpeed);
+        else if (stick.getRawButton(pulleyButton)) pulley.run(Constants.pulleySpeed);
+        else pulley.run(0);
+
     }
-    
-    private void manualShooter () {
-        if (stick.getRawButton(shooterButton))
-            shooter.shoot(getShooterSpeed());
-        else
-            shooter.shoot(0);
+
+    private void manualShooter() {
+
+        if (stick.getRawButton(shooterButton)) shooter.shoot(getShooterSpeed());
+        else shooter.shoot(0);
+
     }
-    
-    private void defaultButtons () {
+
+    private void defaultButtons() {
+
         shootMode = false;
         destroyed = false;
         created = false;
         pastMiddle = false;
         reverse = false;
         hold = false;
+
     }
-    
+
     @Override
-    public void execute () {
-        timeSinceStart ++;
+    public void execute() {
+
+        timeSinceStart++;
         flipButtons();
         removeAllBalls(stick.getRawButton(pulleyButton));
         intake();
         flyWheel();
-        
+
         // Goes to next shooter speed mode
-        if (stick.getRawButtonReleased(changeShooterModeButton))
-            nextShooterSpeedMode();
-        
+        if (stick.getRawButtonReleased(changeShooterModeButton)) nextShooterSpeedMode();
+
         if (!manual) {
+
             if (!reverse) {
+
                 automatedPulley();
                 automatedShooter();
-            } else
-                reverse();
+
+            } else reverse();
+
         } else {
+
             manualPulley();
             manualShooter();
             removeAllBalls(true);
+
         }
+
     }
-    
+
     @Override
-    public void end (boolean interrupted) {
+    public void end(boolean interrupted) {
+
         pulley.stop();
+
     }
-    
+
     @Override
     public boolean isFinished() {
+
         return false;
+
     }
-    
+
 }
