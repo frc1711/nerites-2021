@@ -15,15 +15,6 @@ public final class Constants {
             maxTurnInputSpeed = 0.6,
             turnInputSpeedScalar = 1.5,
             
-            // shooterSpeed = 12000, // 4th zone ???
-            shooterSpeed = 12000, // 3rd zone ???
-            // shooterSpeed = 9500, // 2nd zone WORKS
-            // shooterSpeed = 12000, // 1st zone WORKS
-            
-            // shooterSpeed = 8700, // 0.0034 rps = 1 unit
-            // shooterUBound = shooterSpeed + 2000,
-            // shooterLBound = shooterSpeed - 125,
-            
             widthToHeightWheelbaseRatio = .851,
             
             flyWheelSpeed = .75,
@@ -31,6 +22,13 @@ public final class Constants {
             pulleySpeed = .35,
             
             intakeSpeed = .45;
+    
+    public static final double[] shooterSpeedModes = {
+        12000,  // 1st zone
+        9500,   // 2nd zone
+        12000,  // 3rd zone
+        12000,  // 4th zone
+    };
     
     // PID
     public static final double

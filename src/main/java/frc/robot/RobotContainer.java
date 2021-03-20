@@ -28,7 +28,7 @@ public class RobotContainer {
     
     public RobotContainer () {
         driveController = new Joystick(Constants.driveController);
-        shootController = driveController; //new Joystick(Constants.shootController);
+        shootController = new Joystick(Constants.shootController);
         
         swerveDrive = new SparkDrive();
         shooter = new Shooter();
@@ -48,7 +48,7 @@ public class RobotContainer {
     }
     
     public Command getAutonomousCommand () {
-        return new AutonDrive(swerveDrive, 0, 12, 0.3);
+        return new AutonDrive(swerveDrive, 0, 5*12, 0.4);
     }
     
     public void onTestInit () {

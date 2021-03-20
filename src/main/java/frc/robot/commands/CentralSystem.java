@@ -26,11 +26,21 @@ import frc.robot.util.ballSystem.BallHandler;
  */
 public class CentralSystem extends CommandBase {
     
-    private Pulley pulley;
-    private Shooter shooter;
-    private BallHandler ballHandler;
-    private Intake intake;
-    private Joystick stick;
+    private static final int
+            shooterButton = 1,              // A
+            flyWheelButton = 2,             // B
+            pulleyButton = 3,               // X
+            reversePulleyButton = 4,        // Y
+            intakeButton = 5,               // Left bumper
+            outtakeButton = 6,              // right bumper
+            changeShooterModeButton = 7,    // (Left version of the menu button) OR back button
+            manualToggleButton = 8;         // Menu button OR start button
+    
+    private final Pulley pulley;
+    private final Shooter shooter;
+    private final BallHandler ballHandler;
+    private final Intake intake;
+    private final Joystick stick;
     
     private boolean pastMiddle;
     private boolean shootMode;
@@ -42,6 +52,8 @@ public class CentralSystem extends CommandBase {
     
     private int timeout;
     private int timeSinceStart;
+    
+    private int shooterSpeedIndex = 0;
     
     public CentralSystem (Pulley pulley, Shooter shooter, Intake intake, Joystick stick) {
         addRequirements(pulley, shooter, intake);
@@ -68,10 +80,10 @@ public class CentralSystem extends CommandBase {
     }
     
     private void flipButtons () {
-        if (stick.getRawButtonReleased(4))
+        if (stick.getRawButtonReleased(reversePulleyButton))
             reverse = !reverse;
         
-        if (stick.getRawButtonReleased(8)) {
+        if (stick.getRawButtonReleased(manualToggleButton)) {
             manual = !manual;
             defaultButtons();
         }
@@ -116,13 +128,13 @@ public class CentralSystem extends CommandBase {
     }
     
     private void automatedShooter () {
-        if (stick.getRawButtonReleased(1)) {
+        if (stick.getRawButtonReleased(shooterButton)) {
             shootMode = !shootMode;
             hold = !hold;
         }
         
         if (hold) {
-            shooter.shoot(Constants.shooterSpeed);
+            shooter.shoot(getShooterSpeed());
             shootMode = true;
         } else {
             shooter.stopShooter();
@@ -147,8 +159,18 @@ public class CentralSystem extends CommandBase {
             shootMode = false;
     }
     
+    private double getShooterSpeed () {
+        return Constants.shooterSpeedModes[shooterSpeedIndex];
+    }
+    
+    private void nextShooterSpeedMode () {
+        shooterSpeedIndex ++;
+        shooterSpeedIndex %= Constants.shooterSpeedModes.length;
+        System.out.println("ENTERING SHOOTER ZONE #"+(shooterSpeedIndex+1));
+    }
+    
     private void flyWheel () {
-        if (!manual && stick.getRawButton(2)) {
+        if (!manual && stick.getRawButton(flyWheelButton)) {
             shooter.runFlyWheel();
         } else {
             shooter.stopFlyWheel();
@@ -161,13 +183,13 @@ public class CentralSystem extends CommandBase {
     
     private void intake () {
         if (!pulley.getBottomSensor() || manual) {
-            if (stick.getRawButton(5))
+            if (stick.getRawButton(intakeButton))
                 intake.run(Constants.intakeSpeed);
-            else if (stick.getRawButton(6))
+            else if (stick.getRawButton(outtakeButton))
                 intake.run(-.75 * Constants.intakeSpeed);
             else
                 intake.stop();
-        } else if (stick.getRawButton(6))
+        } else if (stick.getRawButton(outtakeButton))
             intake.run(-.75 * Constants.intakeSpeed);
         else
             intake.stop();
@@ -186,17 +208,17 @@ public class CentralSystem extends CommandBase {
     }
     
     private void manualPulley () {
-        if (stick.getRawButton(4))
+        if (stick.getRawButton(reversePulleyButton))
             pulley.run(-1 * Constants.pulleySpeed);
-        else if (stick.getRawButton(3))
+        else if (stick.getRawButton(pulleyButton))
             pulley.run(Constants.pulleySpeed);
         else
             pulley.run(0);
     }
     
     private void manualShooter () {
-        if (stick.getRawButton(1))
-            shooter.shoot(Constants.shooterSpeed);
+        if (stick.getRawButton(shooterButton))
+            shooter.shoot(getShooterSpeed());
         else
             shooter.shoot(0);
     }
@@ -214,9 +236,13 @@ public class CentralSystem extends CommandBase {
     public void execute () {
         timeSinceStart ++;
         flipButtons();
-        removeAllBalls(stick.getRawButton(3));
+        removeAllBalls(stick.getRawButton(pulleyButton));
         intake();
         flyWheel();
+        
+        // Goes to next shooter speed mode
+        if (stick.getRawButtonReleased(changeShooterModeButton))
+            nextShooterSpeedMode();
         
         if (!manual) {
             if (!reverse) {

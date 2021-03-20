@@ -22,7 +22,7 @@ import frc.team1711.swerve.subsystems.AutoSwerveWheel;
  */
 public class SparkWheel extends AutoSwerveWheel {
     
-    private static final double countsToInches = 12.566 / 8.16 / 42;
+    private static final double unitsToInches = .143333;
     
     private final CANSparkMax driveController, steerController;
     private final PIDController steerPID;
@@ -42,7 +42,6 @@ public class SparkWheel extends AutoSwerveWheel {
         // Custom param 0 used to store getAbsolutePosition() offset,
         // with a scaling factor of 1:100 for more precision
         absolutePositionOffset = getAbsoluteOffset(steerEncoder.configGetCustomParam(0));
-        System.out.println(absolutePositionOffset);
         
         steerEncoder.setPositionToAbsolute(Integer.MAX_VALUE);
         driveEncoder = driveController.getEncoder();
@@ -95,7 +94,7 @@ public class SparkWheel extends AutoSwerveWheel {
     
     @Override
     protected double getPositionDifference () {
-        return driveEncoder.getPosition() * countsToInches;
+        return driveEncoder.getPosition() * unitsToInches;
     }
     
     
