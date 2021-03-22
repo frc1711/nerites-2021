@@ -8,7 +8,7 @@ public final class Constants {
 
     // Speed and hardware constants
     public static final double
-            driveSpeed = .08,
+            driveSpeed = .5,
             turnSpeed = .05,
             maxWheelSpeed = .7,
 
@@ -19,7 +19,7 @@ public final class Constants {
 
             flyWheelSpeed = .75,
 
-            pulleySpeed = .35,
+            pulleySpeed = .7,
 
             intakeSpeed = .45;
 
@@ -29,7 +29,7 @@ public final class Constants {
         10500,  // 3rd zone
         12000,  // 4th zone
     };
-    
+
     // PID
     public static final double
             wheelkP = .6,
