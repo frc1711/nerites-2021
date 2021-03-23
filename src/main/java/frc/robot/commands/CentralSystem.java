@@ -17,8 +17,6 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.util.ballSystem.Ball;
 import frc.robot.util.ballSystem.BallHandler;
 
-// TODO: Fix this
-
 /**
  * Adapted from https://github.com/frc1711/Nerites/blob/master/src/main/java/frc/robot/commands/CentralSystem.java.
  * @author Lou DeZeeuw (original)

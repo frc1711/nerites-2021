@@ -8,13 +8,9 @@ public final class Constants {
     
     // Speed and hardware constants
     public static final double
-            driveSpeed = .08,
-            turnSpeed = .05,
+            driveSpeed = .08, // Strafing speed relative to turning speed
+            turnSpeed = .05, // Turning speed relative to strafing speed
             maxWheelSpeed = .7,
-            
-            maxTurnInputSpeed = 0.6,
-            turnInputSpeedScalar = 1.5,
-            
             widthToHeightWheelbaseRatio = .851,
             
             flyWheelSpeed = .75,
@@ -32,14 +28,9 @@ public final class Constants {
     
     // PID
     public static final double
-            wheelkP = .6,
+            wheelkP = 1.5,
             wheelkI = 0,
             wheelkD = 0,
-            
-            // shooterkP = .0075,
-            // shooterkI = .0001,
-            // shooterkD = shooterkP * 5,
-            // shooterkF = .09,
             
             pulleykP = 0.05,
             pulleykI = 0.05,
