@@ -57,7 +57,7 @@ public class SwerveCommand extends CommandBase {
             rotateXAxis = 0;
         }
         
-        swerveDrive.fieldRelativeInputDrive(directMoveXAxis, directMoveYAxis, rotateXAxis);
+        swerveDrive.fieldRelativeInputDrive(directMoveXAxis, directMoveYAxis, rotateXAxis, true);
     }
     
     @Override

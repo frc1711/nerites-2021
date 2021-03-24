@@ -8,8 +8,8 @@ public final class Constants {
 
     // Speed and hardware constants
     public static final double
-            driveSpeed = .5, // Strafing speed relative to turning speed
-            turnSpeed = .05, // Turning speed relative to strafing speed
+            driveRelativeSpeed = .5, // Strafing speed relative to turning speed
+            steerRelativeSpeed = .5, // Turning speed relative to strafing speed
             maxWheelSpeed = .7,
 
             widthToHeightWheelbaseRatio = .851,

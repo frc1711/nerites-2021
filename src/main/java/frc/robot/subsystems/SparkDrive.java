@@ -20,6 +20,8 @@ public class SparkDrive extends AutoSwerveDrive {
                 Constants.widthToHeightWheelbaseRatio);
         setMaxOutput(Constants.maxWheelSpeed);
         gyro = new AHRS();
+        setDriveRelativeSpeed(Constants.driveRelativeSpeed);
+        setSteerRelativeSpeed(Constants.steerRelativeSpeed);
     }
     
     public void resetAbsoluteEncoders () {

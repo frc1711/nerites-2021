@@ -50,7 +50,7 @@ public class RobotContainer {
     }
     
     public Command getAutonomousCommand () {
-        return new AutonTurn(swerveDrive, 90, FrameOfReference.ROBOT);
+        return new AutonTurn(swerveDrive, 90, 0.3, FrameOfReference.ROBOT);
     }
     
     public void onTestInit () {
