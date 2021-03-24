@@ -16,6 +16,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import frc.robot.Constants;
 import frc.team1711.swerve.subsystems.AutoSwerveWheel;
+import frc.team1711.swerve.util.Angles;
 
 /**
  * @author Gabriel Seaver
@@ -107,10 +108,7 @@ public class SparkWheel extends AutoSwerveWheel {
     
     @Override
     protected double getDirection () {
-        double direction = getRawDirection();
-        while (direction < 0) direction += 360;
-        while (direction >= 360) direction -= 360;
-        return direction;
+        return Angles.wrapDegrees(getRawDirection());
     }
     
     private double getRawDirection () {
@@ -120,9 +118,7 @@ public class SparkWheel extends AutoSwerveWheel {
     @Override
     protected void setDirection (double targetDirection) {
         // Gets the desired change in direction, and places on the interval [-180, 180)
-        double moveDirection = targetDirection - getDirection();
-        while (moveDirection < -180) moveDirection += 360;
-        while (moveDirection >= 180) moveDirection -= 360;
+        double moveDirection = Angles.wrapDegreesZeroCenter(targetDirection - getDirection());
         
         // Sets the PID loop
         final double setSpeed = steerPID.calculate(0, moveDirection / 360);
