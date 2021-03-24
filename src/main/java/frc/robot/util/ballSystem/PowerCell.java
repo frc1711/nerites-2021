@@ -27,8 +27,7 @@ public class PowerCell {
     private final int id;
 
     /**
-     * Boolean value equal to 'true' if this PowerCell has moved beyond the sensor.
-     * TODO [3/20/21 @ 10:36 AM] - Which sensor??
+     * Boolean value equal to 'true' if this PowerCell has moved beyond the middle sensor.
      */
     private boolean pastSensor;
 
@@ -54,11 +53,8 @@ public class PowerCell {
     }
 
     /**
-     * Returns true if this PowerCell is beyond the sensor.
-     *
-     * TODO [3/20/21 @ 10:39 AM] - Which sensor??
-     *
-     * @return true if this PowerCell is beyond the sensor.
+     * Returns true if this PowerCell is beyond the middle sensor.
+     * @return true if this PowerCell is beyond the middle sensor.
      */
     public boolean isPastSensor() {
 
@@ -67,11 +63,11 @@ public class PowerCell {
     }
 
     /**
-     * Sets whether or not this PowerCell is beyond the sensor.
+     * Sets whether or not this PowerCell is beyond the middle sensor.
      *
-     * true indicates that this PowerCell is beyond the sensor, while false indicates that it is not.
+     * true indicates that this PowerCell is beyond the middle sensor, while false indicates that it is not.
      *
-     * @param pastSensor whether or not this PowerCell is beyond the sensor.
+     * @param pastSensor whether or not this PowerCell is beyond the middle sensor.
      */
     public void setPastSensor(boolean pastSensor) {
 
