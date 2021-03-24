@@ -16,46 +16,91 @@ import frc.robot.Constants;
 import frc.robot.util.PIDHelp;
 
 /**
- * Adapted from https://github.com/frc1711/Nerites/blob/master/src/main/java/frc/robot/subsystems/Shooter.java
+ * Subsystem class responsible for managing the shooter on the robot.
+ *
  * @author Lou DeZeeuw
  * @author Gabriel Seaver
+ * Adapted from https://github.com/frc1711/Nerites/blob/master/src/main/java/frc/robot/subsystems/Shooter.java
  */
 public class Shooter extends SubsystemBase {
-    
-    private WPI_TalonSRX shooterTalonLeft;
-    private WPI_TalonSRX shooterTalonRight;
-    
-    private WPI_TalonSRX flyWheel;
-    
-    public Shooter () {
+
+    /**
+     * The TalonSRX motor controller responsible for controlling the left shooter motor.
+     */
+    private final WPI_TalonSRX shooterTalonLeft;
+
+    /**
+     * The TalonSRX motor controller responsible for controlling the right shooter motor.
+     */
+    private final WPI_TalonSRX shooterTalonRight;
+
+    /**
+     * A semantic TalonSRX motor controller responsible for controlling both shooter motors.
+     *
+     * This is internally equivalent to Shooter#shooterTalonLeft, but semantically, it is the master controller for the
+     * shooter motors.
+     */
+    private final WPI_TalonSRX shooterTalons;
+
+    /**
+     * The TalonSRX motor controller responsible for controlling the kicker wheels.
+     */
+    private final WPI_TalonSRX kicker;
+
+    /**
+     * Initializes a new Shooter instance.
+     */
+    public Shooter() {
+
         shooterTalonLeft = new WPI_TalonSRX(Constants.shooterLeft);
         shooterTalonRight = new WPI_TalonSRX(Constants.shooterRight);
-        flyWheel = new WPI_TalonSRX(Constants.flyWheel);
-        
+        shooterTalons = shooterTalonLeft;
+        kicker = new WPI_TalonSRX(Constants.flyWheel);
+
         shooterTalonLeft.setSafetyEnabled(false);
         shooterTalonRight.setSafetyEnabled(false);
-        
+
         shooterTalonRight.setInverted(true);
         shooterTalonRight.set(ControlMode.Follower, Constants.shooterLeft);
+
     }
-    
-    public void shoot (double speed) {
+
+    /**
+     * Sets the shooter motors to spin at the specified speed.
+     *
+     * @param speed
+     */
+    public void shoot(double speed) {
+
         PIDHelp.toVelocity(shooterTalonLeft, speed);
+
     }
-    
-    public void stopShooter () {
-        shooterTalonLeft.set(0);
+
+    /**
+     * Stops the shooter motors.
+     */
+    public void stopShooter() {
+
+        shooterTalons.set(0);
+
     }
-    
-    public void runFlyWheel () {
-        flyWheel.set(Constants.flyWheelSpeed);
+
+    /**
+     * Runs the kicker motor.
+     */
+    public void runKicker() {
+
+        kicker.set(Constants.flyWheelSpeed);
+
     }
-    
-    public void stopFlyWheel () {
-        flyWheel.set(0);
+
+    /**
+     * Stops the kicker motor.
+     */
+    public void stopKicker() {
+
+        kicker.set(0);
+
     }
-    
-    @Override
-    public void periodic () {}
-    
+
 }
