@@ -6,13 +6,15 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
+
 import frc.robot.commands.CentralSystem;
 import frc.robot.commands.SwerveCommand;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pulley;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SparkDrive;
-import frc.team1711.swerve.commands.AutonBodyTurnAbs;
+import frc.team1711.swerve.commands.AutonTurn;
+import frc.team1711.swerve.commands.FrameOfReference;
 
 public class RobotContainer {
     
@@ -48,8 +50,7 @@ public class RobotContainer {
     }
     
     public Command getAutonomousCommand () {
-        return new AutonBodyTurnAbs(swerveDrive, 90);
-        // return new AutonDrive(swerveDrive, 0, 5*12, 0.4);
+        return new AutonTurn(swerveDrive, 90, FrameOfReference.ROBOT);
     }
     
     public void onTestInit () {

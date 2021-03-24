@@ -1,0 +1,26 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+        {
+            "type": "gradle",
+            "id": "c:\\all\\programming\\Robotics\\Nerites 2021cleanNerites 2021",
+            "script": "clean",
+            "description": "Deletes the build directory.",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "project": "Nerites 2021",
+            "buildFile": "C:\\all\\programming\\Robotics\\Nerites 2021\\build.gradle",
+            "rootProject": "Nerites 2021",
+            "projectFolder": "c:\\all\\programming\\Robotics\\Nerites 2021",
+            "workspaceFolder": "c:\\all\\programming\\Robotics\\Nerites 2021",
+            "args": "",
+            "javaDebug": false,
+            "problemMatcher": [
+                "$gradle"
+            ],
+            "label": "gradle: clean"
+        }
+    ]
+}
