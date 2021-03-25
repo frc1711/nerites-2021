@@ -9,12 +9,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.commands.CentralSystem;
 import frc.robot.commands.SwerveCommand;
+import frc.robot.commands.TestCommand;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pulley;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SparkDrive;
-import frc.team1711.swerve.commands.AutonTurn;
-import frc.team1711.swerve.commands.FrameOfReference;
 
 public class RobotContainer {
     
@@ -41,7 +40,9 @@ public class RobotContainer {
                 swerveDrive,
                 () -> driveController.getRawAxis(Constants.directMoveXAxis) * Constants.directMoveXAxisScalar,
                 () -> driveController.getRawAxis(Constants.directMoveYAxis) * Constants.directMoveYAxisScalar,
-                () -> driveController.getRawAxis(Constants.rotateXAxis) * Constants.rotateXAxisScalar);
+                () -> driveController.getRawAxis(Constants.rotateXAxis) * Constants.rotateXAxisScalar,
+                () -> driveController.getRawButton(1),
+                () -> driveController.getRawButtonReleased(5));
         
         centralSystem = new CentralSystem(pulley, shooter, intake, shootController);
         
@@ -50,7 +51,7 @@ public class RobotContainer {
     }
     
     public Command getAutonomousCommand () {
-        return new AutonTurn(swerveDrive, 90, 0.3, FrameOfReference.ROBOT);
+        return new TestCommand(swerveDrive);
     }
     
     public void onTestInit () {

@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -23,19 +24,26 @@ public class SwerveCommand extends CommandBase {
             dirMoveYAxis,
             rotXAxis;
     
+    private final BooleanSupplier
+            turboMode,
+            resetGyro;
+    
     public SwerveCommand (
-            SparkDrive _swerveDrive,
-            DoubleSupplier _dirMoveXAxis,
-            DoubleSupplier _dirMoveYAxis,
-            DoubleSupplier _rotXAxis) {
+            SparkDrive swerveDrive,
+            DoubleSupplier dirMoveXAxis,
+            DoubleSupplier dirMoveYAxis,
+            DoubleSupplier rotXAxis,
+            BooleanSupplier turboMode,
+            BooleanSupplier resetGyro) {
         
-        swerveDrive = _swerveDrive;
-        
+        this.swerveDrive = swerveDrive;
+        this.dirMoveXAxis = dirMoveXAxis;
+        this.dirMoveYAxis = dirMoveYAxis;
+        this.rotXAxis = rotXAxis;
+        this.turboMode = turboMode;
+        this.resetGyro = resetGyro;
+
         addRequirements(swerveDrive);
-        
-        dirMoveXAxis = _dirMoveXAxis;
-        dirMoveYAxis = _dirMoveYAxis;
-        rotXAxis = _rotXAxis;
     }
     
     @Override
@@ -45,6 +53,19 @@ public class SwerveCommand extends CommandBase {
     
     @Override
     public void execute () {
+
+        if (resetGyro.getAsBoolean()) swerveDrive.resetGyro();
+
+        if (turboMode.getAsBoolean()) {
+            swerveDrive.setMaxOutput(Constants.maxWheelSpeeds[1]);
+            swerveDrive.setDriveRelativeSpeed(Constants.driveRelativeSpeeds[1]);
+            swerveDrive.setSteerRelativeSpeed(Constants.steerRelativeSpeeds[1]);
+        } else {
+            swerveDrive.setMaxOutput(Constants.maxWheelSpeeds[0]);
+            swerveDrive.setDriveRelativeSpeed(Constants.driveRelativeSpeeds[0]);
+            swerveDrive.setSteerRelativeSpeed(Constants.steerRelativeSpeeds[0]);
+        }
+
         double directMoveXAxis = dirMoveXAxis.getAsDouble();
         double directMoveYAxis = dirMoveYAxis.getAsDouble();
         double rotateXAxis = rotXAxis.getAsDouble();

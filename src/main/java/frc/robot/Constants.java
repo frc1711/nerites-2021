@@ -6,12 +6,15 @@ package frc.robot;
 
 public final class Constants {
 
-    // Speed and hardware constants
-    public static final double
-            driveRelativeSpeed = .5, // Strafing speed relative to turning speed
-            steerRelativeSpeed = .5, // Turning speed relative to strafing speed
-            maxWheelSpeed = .7,
+    // [0] -> Normal mode
+    // [1] -> TUUURBO MODE
+    public static final double[]
+            driveRelativeSpeeds = {.2, 1},   // Strafing speed relative to turning speed
+            steerRelativeSpeeds = {.1, .5}, // Turning speed relative to strafing speed
+            maxWheelSpeeds = {.4, 1};
 
+    // Speed and hardware constants\
+    public static final double
             widthToHeightWheelbaseRatio = .851,
 
             flyWheelSpeed = .75,
