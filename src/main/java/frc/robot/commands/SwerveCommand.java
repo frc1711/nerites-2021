@@ -26,6 +26,7 @@ public class SwerveCommand extends CommandBase {
     
     private final BooleanSupplier
             turboMode,
+            slowMode,
             resetGyro;
     
     public SwerveCommand (
@@ -34,6 +35,7 @@ public class SwerveCommand extends CommandBase {
             DoubleSupplier dirMoveYAxis,
             DoubleSupplier rotXAxis,
             BooleanSupplier turboMode,
+            BooleanSupplier slowMode,
             BooleanSupplier resetGyro) {
         
         this.swerveDrive = swerveDrive;
@@ -41,6 +43,7 @@ public class SwerveCommand extends CommandBase {
         this.dirMoveYAxis = dirMoveYAxis;
         this.rotXAxis = rotXAxis;
         this.turboMode = turboMode;
+        this.slowMode = slowMode;
         this.resetGyro = resetGyro;
 
         addRequirements(swerveDrive);
@@ -56,7 +59,11 @@ public class SwerveCommand extends CommandBase {
 
         if (resetGyro.getAsBoolean()) swerveDrive.resetGyro();
 
-        if (turboMode.getAsBoolean()) {
+        if (slowMode.getAsBoolean()) {
+            swerveDrive.setMaxOutput(Constants.maxWheelSpeeds[2]);
+            swerveDrive.setDriveRelativeSpeed(Constants.driveRelativeSpeeds[2]);
+            swerveDrive.setSteerRelativeSpeed(Constants.steerRelativeSpeeds[2]);
+        } else if (turboMode.getAsBoolean()) {
             swerveDrive.setMaxOutput(Constants.maxWheelSpeeds[1]);
             swerveDrive.setDriveRelativeSpeed(Constants.driveRelativeSpeeds[1]);
             swerveDrive.setSteerRelativeSpeed(Constants.steerRelativeSpeeds[1]);

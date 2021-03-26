@@ -10,7 +10,12 @@ public class SlowTurn {
      * Field-relative slow turn
      */
     public static AutonTurn make (AutoSwerveDrive swerveDrive, double direction) {
-        return new AutonTurn(swerveDrive, direction, 0.03, FrameOfReference.FIELD);
+        return new AutonTurn(
+                swerveDrive,
+                direction,
+                0.02,
+                1,
+                FrameOfReference.FIELD);
     }
 
 }

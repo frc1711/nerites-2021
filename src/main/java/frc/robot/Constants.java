@@ -8,10 +8,11 @@ public final class Constants {
 
     // [0] -> Normal mode
     // [1] -> TUUURBO MODE
+    // [2] -> Slow mode
     public static final double[]
-            driveRelativeSpeeds = {.2, 1},   // Strafing speed relative to turning speed
-            steerRelativeSpeeds = {.1, .5}, // Turning speed relative to strafing speed
-            maxWheelSpeeds = {.4, 1};
+            driveRelativeSpeeds =   {.6,    1,      .1},   // Strafing speed relative to turning speed
+            steerRelativeSpeeds =   {.7,    .65,    .05}, // Turning speed relative to strafing speed
+            maxWheelSpeeds =        {.6,    1,      .08};
 
     // Speed and hardware constants\
     public static final double
@@ -32,7 +33,7 @@ public final class Constants {
 
     // PID
     public static final double
-            wheelkP = 1.5,
+            wheelkP = 1.5, // 1.5
             wheelkI = 0,
             wheelkD = 0,
             
@@ -47,17 +48,17 @@ public final class Constants {
             flDriveMotor = 2,
             flSteerEncoder = 17,
 
-            frSteerMotor = 4,
-            frDriveMotor = 3,
-            frSteerEncoder = 19,
+            frSteerMotor = 4, // 4
+            frDriveMotor = 3, // 3
+            frSteerEncoder = 19, // 19
 
             rlSteerMotor = 1,
             rlDriveMotor = 13,
             rlSteerEncoder = 16,
 
-            rrSteerMotor = 14,
-            rrDriveMotor = 15,
-            rrSteerEncoder = 18,
+            rrSteerMotor = 14, // 14
+            rrDriveMotor = 15, // 15
+            rrSteerEncoder = 18, // 18
 
             shooterLeft = 0,
             shooterRight = 5,

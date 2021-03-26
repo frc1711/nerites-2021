@@ -21,14 +21,14 @@ public class TestCommand extends SequentialCommandGroup {
             SlowTurn.make(swerveDrive, 0),
 
             // Mid fast part
-            FastDrive.make(swerveDrive, 0, 5.9),
+            FastDrive.make(swerveDrive, 0, 6),
             SlowTurn.make(swerveDrive, 0),
 
             // Loop at end
             SlowDrive.make(swerveDrive, 2, 0),
             SlowTurn.make(swerveDrive, 0),
 
-            SlowDrive.make(swerveDrive, 0, 1.5),
+            SlowDrive.make(swerveDrive, 0, 2),
             SlowTurn.make(swerveDrive, 0),
 
             SlowDrive.make(swerveDrive, -2, 0),
@@ -37,11 +37,11 @@ public class TestCommand extends SequentialCommandGroup {
             SlowDrive.make(swerveDrive, 0, -2.2),
             SlowTurn.make(swerveDrive, 0),
 
-            SlowDrive.make(swerveDrive, 2.2, 0),
+            SlowDrive.make(swerveDrive, 2, 0),
             SlowTurn.make(swerveDrive, 0),
 
             // Mid fast part (going back)
-            FastDrive.make(swerveDrive, 0, -6.5),
+            FastDrive.make(swerveDrive, 0, -6.8),
             SlowTurn.make(swerveDrive, 0),
 
             // Final L
@@ -49,6 +49,44 @@ public class TestCommand extends SequentialCommandGroup {
             SlowTurn.make(swerveDrive, 0),
             SlowDrive.make(swerveDrive, 0, -2),
             SlowTurn.make(swerveDrive, 0));
+
+            // SlowTurn.make(swerveDrive, 0),
+
+            // // Beginning L
+            // SlowDrive.make(swerveDrive, 0, 2),
+            // SlowTurn.make(swerveDrive, 0),
+            // SlowDrive.make(swerveDrive, -2, 0),
+            // SlowTurn.make(swerveDrive, 0),
+
+            // // Mid fast part
+            // FastDrive.make(swerveDrive, 0, 5.9),
+            // SlowTurn.make(swerveDrive, 0),
+
+            // // Loop at end
+            // SlowDrive.make(swerveDrive, 2, 0),
+            // SlowTurn.make(swerveDrive, 0),
+
+            // SlowDrive.make(swerveDrive, 0, 1.5),
+            // SlowTurn.make(swerveDrive, 0),
+
+            // SlowDrive.make(swerveDrive, -2, 0),
+            // SlowTurn.make(swerveDrive, 0),
+
+            // SlowDrive.make(swerveDrive, 0, -2.2),
+            // SlowTurn.make(swerveDrive, 0),
+
+            // SlowDrive.make(swerveDrive, 2.2, 0),
+            // SlowTurn.make(swerveDrive, 0),
+
+            // // Mid fast part (going back)
+            // FastDrive.make(swerveDrive, 0, -6.5),
+            // SlowTurn.make(swerveDrive, 0),
+
+            // // Final L
+            // SlowDrive.make(swerveDrive, -2, 0),
+            // SlowTurn.make(swerveDrive, 0),
+            // SlowDrive.make(swerveDrive, 0, -2),
+            // SlowTurn.make(swerveDrive, 0));
     }
     
 }

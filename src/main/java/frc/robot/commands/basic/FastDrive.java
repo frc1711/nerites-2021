@@ -13,7 +13,16 @@ public class FastDrive {
      * 2.5 feet per square
      */
     public static AutonDrive make (AutoSwerveDrive swerveDrive, double squaresRight, double squaresForward) {
-        return AutonDrive.fromMovement(swerveDrive, squaresRight*SQUARE_SIZE, squaresForward*SQUARE_SIZE, 0.35, FrameOfReference.FIELD);
+        AutonDrive drive = AutonDrive.fromMovement(
+                swerveDrive,
+                squaresRight*SQUARE_SIZE,
+                squaresForward*SQUARE_SIZE,
+                0.35,
+                8,
+                0.015,
+                FrameOfReference.FIELD);
+        drive.setEaseOut(24, 0.15);
+        return drive;
     }
 
 }

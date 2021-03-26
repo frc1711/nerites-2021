@@ -14,6 +14,8 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pulley;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SparkDrive;
+import frc.team1711.swerve.commands.AutonDrive;
+import frc.team1711.swerve.commands.FrameOfReference;
 
 public class RobotContainer {
     
@@ -41,8 +43,9 @@ public class RobotContainer {
                 () -> driveController.getRawAxis(Constants.directMoveXAxis) * Constants.directMoveXAxisScalar,
                 () -> driveController.getRawAxis(Constants.directMoveYAxis) * Constants.directMoveYAxisScalar,
                 () -> driveController.getRawAxis(Constants.rotateXAxis) * Constants.rotateXAxisScalar,
-                () -> driveController.getRawButton(1),
-                () -> driveController.getRawButtonReleased(5));
+                () -> driveController.getRawAxis(3) > .8,
+                () -> driveController.getRawAxis(2) > .8,
+                () -> driveController.getRawButtonReleased(5) && driveController.getRawButtonReleased(6));
         
         centralSystem = new CentralSystem(pulley, shooter, intake, shootController);
         
