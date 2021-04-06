@@ -13,7 +13,7 @@ public class SlowTurn {
         return new AutonTurn(
                 swerveDrive,
                 direction,
-                0.02,
+                0.04,
                 1,
                 FrameOfReference.FIELD);
     }

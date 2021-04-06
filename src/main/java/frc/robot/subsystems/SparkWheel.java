@@ -9,6 +9,7 @@ import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 import com.revrobotics.CANEncoder;
+import com.revrobotics.CANError;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -30,6 +31,7 @@ public class SparkWheel extends AutoSwerveWheel {
     private final CANCoder steerEncoder;
     private final CANEncoder driveEncoder;
     private final double absolutePositionOffset;
+    private int tempCounter; // TODO: Delete this
     
     public SparkWheel (int rotationID, int directionID, int steerEncoderID) {
         steerController = new CANSparkMax(rotationID, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -97,7 +99,13 @@ public class SparkWheel extends AutoSwerveWheel {
     
     @Override
     protected void resetDriveEncoder () {
+        driveEncoder.setPosition(0); // TODO: This probably doesn't work
         driveEncoder.setPosition(0);
+        driveEncoder.setPosition(0);
+        if (driveEncoder.setPosition(0) != CANError.kOk)
+            System.out.println("CANError encountered resetting CANEncoder.");
+        System.out.println(tempCounter);
+        tempCounter ++;
     }
     
     @Override

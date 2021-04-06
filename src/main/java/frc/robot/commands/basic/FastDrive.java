@@ -17,7 +17,7 @@ public class FastDrive {
                 swerveDrive,
                 squaresRight*SQUARE_SIZE,
                 squaresForward*SQUARE_SIZE,
-                0.35,
+                1.5,
                 8,
                 0.015,
                 FrameOfReference.FIELD);

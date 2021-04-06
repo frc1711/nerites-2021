@@ -17,11 +17,11 @@ public class SlowDrive {
                 swerveDrive,
                 squaresRight*SQUARE_SIZE,
                 squaresForward*SQUARE_SIZE,
-                0.2,
+                0.4,
                 8,
                 0.015,
                 FrameOfReference.FIELD);
-        drive.setEaseOut(6, 0.1);
+        drive.setEaseOut(6, 0.15);
         return drive;
     }
 

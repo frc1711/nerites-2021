@@ -33,7 +33,7 @@ public final class Constants {
 
     // PID
     public static final double
-            wheelkP = 1.5, // 1.5
+            wheelkP = 1.5,
             wheelkI = 0,
             wheelkD = 0,
             
