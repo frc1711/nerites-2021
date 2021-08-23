@@ -83,17 +83,17 @@ public final class Constants {
 
     // OI
     public static final int
-            directMoveXAxis = 0,
+            directMoveXAxis = 0, // Left X axis
             directMoveXAxisScalar = 1,
 
-            directMoveYAxis = 1,
+            directMoveYAxis = 1, // Left Y axis
             directMoveYAxisScalar = -1,
 			
-			liftAxis = 1,
-			winchAxis = 5;
+			liftAxis = 1, // Left Y axis
+			winchAxis = 5; // Right Y axis
 
     public static final int
-            rotateXAxis = 4,
+            rotateXAxis = 4, // Right X axis
             rotateXAxisScalar = 1;
 
     public static final double

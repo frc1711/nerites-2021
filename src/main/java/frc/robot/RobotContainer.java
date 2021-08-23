@@ -69,7 +69,7 @@ public class RobotContainer {
     public Command getAutonomousCommand () {
         // return new BouncePath(swerveDrive);
         // return new SlalomPath(swerveDrive);
-		return SlowDrive.make(swerveDrive, 0, 0.5);
+		return SlowDrive.make(swerveDrive, 0, 1.5);
     }
     
     public void onTestInit () {
