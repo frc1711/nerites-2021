@@ -90,7 +90,10 @@ public final class Constants {
             directMoveYAxisScalar = -1,
 			
 			liftAxis = 1, // Left Y axis
-			winchAxis = 5; // Right Y axis
+			liftAxisScalar = -1,
+			
+			winchAxis = 5, // Right Y axis
+			winchAxisScalar = -1;
 
     public static final int
             rotateXAxis = 4, // Right X axis

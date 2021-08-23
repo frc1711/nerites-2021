@@ -58,8 +58,8 @@ public class RobotContainer {
 		
 		climberCommand = new ClimberCommand(
 				climber,
-				() -> shootController.getRawAxis(Constants.liftAxis),
-				() -> shootController.getRawAxis(Constants.winchAxis));
+				() -> shootController.getRawAxis(Constants.liftAxis) * Constants.liftAxisScalar,
+				() -> shootController.getRawAxis(Constants.winchAxis) * Constants.winchAxisScalar);
         
         swerveDrive.setDefaultCommand(swerveCommand);
         shooter.setDefaultCommand(centralSystem);
