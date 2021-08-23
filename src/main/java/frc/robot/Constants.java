@@ -14,7 +14,7 @@ public final class Constants {
             steerRelativeSpeeds =   {.7,    .65,    .05}, // Turning speed relative to strafing speed
             maxWheelSpeeds =        {.6,    1,      .08};
 
-    // Speed and hardware constants\
+    // Speed and hardware constants
     public static final double
             widthToHeightWheelbaseRatio = .851,
 
@@ -22,7 +22,10 @@ public final class Constants {
 
             pulleySpeed = .7,
 
-            intakeSpeed = .45;
+            intakeSpeed = .45,
+			
+			liftSpeedScalar = 0.2,
+			winchSpeedScalar = 0.2;
 
     public static final double[] shooterSpeedModes = {
         12000,  // 1st zone
@@ -48,17 +51,17 @@ public final class Constants {
             flDriveMotor = 2,
             flSteerEncoder = 17,
 
-            frSteerMotor = 4, // 4
-            frDriveMotor = 3, // 3
-            frSteerEncoder = 19, // 19
+            frSteerMotor = 4,
+            frDriveMotor = 3,
+            frSteerEncoder = 19,
 
             rlSteerMotor = 1,
             rlDriveMotor = 13,
             rlSteerEncoder = 16,
 
-            rrSteerMotor = 14, // 14
-            rrDriveMotor = 15, // 15
-            rrSteerEncoder = 18, // 18
+            rrSteerMotor = 14,
+            rrDriveMotor = 15,
+            rrSteerEncoder = 18,
 
             shooterLeft = 0,
             shooterRight = 5,
@@ -66,6 +69,9 @@ public final class Constants {
             flyWheel = 8,
 
             intake = 9,
+			
+			lift = 11,
+			winch = 10, // ID may not be 10
 
             pulley = 7;
 
@@ -81,7 +87,10 @@ public final class Constants {
             directMoveXAxisScalar = 1,
 
             directMoveYAxis = 1,
-            directMoveYAxisScalar = -1;
+            directMoveYAxisScalar = -1,
+			
+			liftAxis = 1,
+			winchAxis = 5;
 
     public static final int
             rotateXAxis = 4,
