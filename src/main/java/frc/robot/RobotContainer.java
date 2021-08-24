@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.CentralSystem;
 import frc.robot.commands.ClimberCommand;
 import frc.robot.commands.SwerveCommand;
-import frc.robot.commands.basic.SlowDrive;
+import frc.robot.commands.basic.Shoot;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pulley;
@@ -63,9 +63,7 @@ public class RobotContainer {
     }
     
     public Command getAutonomousCommand () {
-        // return new BouncePath(swerveDrive);
-        // return new SlalomPath(swerveDrive);
-		return SlowDrive.make(swerveDrive, 0, 1.5);
+		return new Shoot(pulley, shooter, 1, 3);
     }
     
     public void onTestInit () {
