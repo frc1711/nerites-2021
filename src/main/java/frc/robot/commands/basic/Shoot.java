@@ -27,7 +27,7 @@ public class Shoot extends CommandBase {
 	private int step = 0;
 	
 	public Shoot (Pulley pulley, Shooter shooter, int numCellsToShoot, int zoneNumber) {
-		addRequirements(pulley);
+		addRequirements(pulley, shooter);
 		
 		this.pulley = pulley;
 		this.shooter = shooter;
@@ -61,7 +61,7 @@ public class Shoot extends CommandBase {
 		
 	}
 	
-	private static final int shooterUpToSpeedTime = 5, kickerTimeToRun = 5;
+	private static final int shooterUpToSpeedTime = 30, kickerTimeToRun = 15;
 	
 	private int shooterTimer, kickerTimer;
 	
@@ -72,6 +72,8 @@ public class Shoot extends CommandBase {
 		// Keep running the pulleys until a cell arrives at the shooter, stopping when finished
 		if (!pulley.getTopSensor()) pulley.run(Constants.pulleySpeed);
 		else pulley.stop();
+		
+		System.out.println(pulley.getTopSensor());
 		
 		// Advance the timer
 		shooterTimer ++;
@@ -127,7 +129,7 @@ public class Shoot extends CommandBase {
     }
 	
 	@Override
-	public boolean isFinished() {
+	public boolean isFinished () {
 		return step == 3;
 	}
 	

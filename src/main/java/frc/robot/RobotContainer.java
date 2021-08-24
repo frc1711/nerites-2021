@@ -6,11 +6,13 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
-
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.CentralSystem;
 import frc.robot.commands.ClimberCommand;
 import frc.robot.commands.SwerveCommand;
 import frc.robot.commands.basic.Shoot;
+import frc.robot.commands.basic.SlowDrive;
+import frc.robot.commands.basic.SlowTurn;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pulley;
@@ -63,7 +65,10 @@ public class RobotContainer {
     }
     
     public Command getAutonomousCommand () {
-		return new Shoot(pulley, shooter, 1, 3);
+		return new SequentialCommandGroup(
+				SlowTurn.make(swerveDrive, 0),
+				SlowDrive.make(swerveDrive, 0, 18),
+				new Shoot(pulley, shooter, 3, 1));
     }
     
     public void onTestInit () {

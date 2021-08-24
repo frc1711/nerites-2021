@@ -45,7 +45,7 @@ public class SparkWheel extends AutoSwerveWheel {
         // Custom param 0 used to store getAbsolutePosition() offset,
         // with a scaling factor of 1:100 for more precision
         absolutePositionOffset = getAbsoluteOffset(steerEncoder.configGetCustomParam(0, 100));
-        System.out.println(absolutePositionOffset);
+		
         /*
         79.98
         58.88
@@ -97,15 +97,16 @@ public class SparkWheel extends AutoSwerveWheel {
         driveController.set(speed);
     }
     
+	double driveEncoderResetValue = 0;
+	
     @Override
     protected void resetDriveEncoder () {
-        if (driveEncoder.setPosition(0) != CANError.kOk)
-            System.out.println("CANError encountered resetting CANEncoder.");
+        driveEncoderResetValue = driveEncoder.getPosition();
     }
     
     @Override
     protected double getPositionDifference () {
-        return driveEncoder.getPosition() * unitsToInches;
+        return (driveEncoder.getPosition() - driveEncoderResetValue) * unitsToInches;
     }
     
     
