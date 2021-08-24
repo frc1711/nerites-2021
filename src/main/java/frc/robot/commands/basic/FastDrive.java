@@ -5,18 +5,15 @@ import frc.team1711.swerve.commands.FrameOfReference;
 import frc.team1711.swerve.subsystems.AutoSwerveDrive;
 
 public class FastDrive {
-    
-    private static final int SQUARE_SIZE = 30; // 2.5 feet per square
 
     /**
-     * Field-relative slow drive
-     * 2.5 feet per square
+     * Field-relative fast drive.
      */
-    public static AutonDrive make (AutoSwerveDrive swerveDrive, double squaresRight, double squaresForward) {
+    public static AutonDrive make (AutoSwerveDrive swerveDrive, double inchesRight, double inchesForward) {
         AutonDrive drive = AutonDrive.fromMovement(
                 swerveDrive,
-                squaresRight*SQUARE_SIZE,
-                squaresForward*SQUARE_SIZE,
+                inchesRight,
+                inchesForward,
                 1.5,
                 8,
                 0.015,

@@ -11,15 +11,11 @@ import frc.robot.commands.CentralSystem;
 import frc.robot.commands.ClimberCommand;
 import frc.robot.commands.SwerveCommand;
 import frc.robot.commands.basic.SlowDrive;
-import frc.robot.commands.paths.SlalomPath;
-import frc.robot.commands.paths.BouncePath;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pulley;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SparkDrive;
-import frc.team1711.swerve.commands.AutonDrive;
-import frc.team1711.swerve.commands.FrameOfReference;
 
 public class RobotContainer {
     

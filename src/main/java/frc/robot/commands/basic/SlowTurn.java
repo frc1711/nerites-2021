@@ -7,7 +7,7 @@ import frc.team1711.swerve.subsystems.AutoSwerveDrive;
 public class SlowTurn {
     
     /**
-     * Field-relative slow turn
+     * Field-relative slow turn.
      */
     public static AutonTurn make (AutoSwerveDrive swerveDrive, double direction) {
         return new AutonTurn(
