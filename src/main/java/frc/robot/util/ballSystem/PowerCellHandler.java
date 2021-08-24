@@ -40,9 +40,9 @@ public class PowerCellHandler {
      * @param powerCell The PowerCell to add to the robot.
      */
     public void addPowerCell(PowerCell... powerCell) {
-
+		
         powerCellList.addAll(Arrays.asList(powerCell));
-
+		
     }
 
     /**
@@ -51,8 +51,12 @@ public class PowerCellHandler {
     public void removeLastPowerCellHandled() {
 
         if (powerCellList.size() != 0) powerCellList.remove(powerCellList.size() - 1);
-
+		
     }
+	
+	public void removeAllCells () {
+		powerCellList.clear();
+	}
 
     /**
      * Return the number of power cells currently being manipulated by the robot.
@@ -77,8 +81,9 @@ public class PowerCellHandler {
     }
 
     /**
-     * Returns the n-th latest PowerCell that was introduced to the robot via the intake.
-     *
+     * Returns the n-th latest PowerCell that was introduced to the robot via the intake,
+	 * with {@code 0} being the latest.
+	 * 
      * @return The n-th latest PowerCell that was introduced to the robot via the intake.
      */
     public PowerCell getLatestPowerCell(int n) {

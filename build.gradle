@@ -37,6 +37,12 @@ deploy {
     }
 }
 
+repositories {
+	flatDir {
+		dirs 'libs'
+	}
+}
+
 // Set this to true to enable desktop support.
 def includeDesktopSupport = false
 
@@ -62,8 +68,8 @@ dependencies {
     // Websocket extensions require additional configuration.
     // simulation wpi.deps.sim.ws_server(wpi.platforms.desktop, false)
     // simulation wpi.deps.sim.ws_client(wpi.platforms.desktop, false)
-    
-    implementation files('libs/swervelib-2.0.jar')
+	
+	compile name: 'swervelib-2.0'
 }
 
 // Simulation configuration (e.g. environment variables).

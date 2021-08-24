@@ -88,6 +88,8 @@ public class CentralSystem extends CommandBase {
 
             manual = !manual;
             defaultButtons();
+			System.out.println("Manual mode is now " + (manual ? "ENABLED" : "DISABLED"));
+			if (manual) powerCellHandler.removeAllCells();
 
         }
 
@@ -128,7 +130,7 @@ public class CentralSystem extends CommandBase {
 
         } else if (
             powerCellHandler.count() > 1 &&
-            powerCellHandler.getLatestPowerCell().isPastSensor() &&
+            powerCellHandler.getLatestPowerCell(1).isPastSensor() &&
             !lastPowerCell.isPastSensor()) pulley.run(Constants.pulleySpeed);
         else {
 
@@ -203,12 +205,6 @@ public class CentralSystem extends CommandBase {
 
     }
 
-    private void removeAllPowerCells(Boolean bool) {
-
-        if (bool) powerCellHandler.removeLastPowerCellHandled();
-
-    }
-
     private void intake() {
 
         if (!pulley.getBottomSensor() || manual) {
@@ -267,7 +263,6 @@ public class CentralSystem extends CommandBase {
 
         timeSinceStart++;
         flipButtons();
-        removeAllPowerCells(stick.getRawButton(pulleyButton));
         intake();
         flyWheel();
 
@@ -287,7 +282,6 @@ public class CentralSystem extends CommandBase {
 
             manualPulley();
             manualShooter();
-            removeAllPowerCells(true);
 
         }
 
