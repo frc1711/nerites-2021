@@ -7,9 +7,9 @@ import frc.team1711.swerve.subsystems.AutoSwerveDrive;
 public class FastDrive {
 
     /**
-     * Field-relative fast drive.
+     * Fast drive.
      */
-    public static AutonDrive make (AutoSwerveDrive swerveDrive, double inchesRight, double inchesForward) {
+    public static AutonDrive make (AutoSwerveDrive swerveDrive, double inchesRight, double inchesForward, boolean robotRelative) {
         AutonDrive drive = AutonDrive.fromMovement(
                 swerveDrive,
                 inchesRight,
@@ -17,9 +17,16 @@ public class FastDrive {
                 1.5,
                 8,
                 0.015,
-                FrameOfReference.FIELD);
+                robotRelative ? FrameOfReference.ROBOT : FrameOfReference.FIELD);
         drive.setEaseOut(24, 0.15);
         return drive;
     }
+	
+	/**
+	 * Field-relative fast drive.
+	 */
+	public static AutonDrive make (AutoSwerveDrive swerveDrive, double inchesRight, double inchesForward) {
+		return make(swerveDrive, inchesRight, inchesForward, false);
+	}
 
 }
