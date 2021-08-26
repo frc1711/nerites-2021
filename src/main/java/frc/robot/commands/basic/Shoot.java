@@ -73,8 +73,6 @@ public class Shoot extends CommandBase {
 		if (!pulley.getTopSensor()) pulley.run(Constants.pulleySpeed);
 		else pulley.stop();
 		
-		System.out.println(pulley.getTopSensor());
-		
 		// Advance the timer
 		shooterTimer ++;
 		

@@ -24,8 +24,8 @@ public final class Constants {
 
             intakeSpeed = .45,
 			
-			liftSpeedScalar = 1,
-			winchSpeedScalar = 1;
+			liftSpeedScalar = 0.4,
+			winchSpeedScalar = 0.8;
 
     public static final double[] shooterSpeedModes = {
         12000,  // 1st zone

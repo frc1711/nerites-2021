@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.CentralSystem;
@@ -15,6 +16,7 @@ import frc.robot.commands.basic.SlowDrive;
 import frc.robot.commands.basic.SlowTurn;
 import frc.robot.commands.paths.LeftPath;
 import frc.robot.commands.paths.StraightPath;
+import frc.robot.commands.paths.TestPath;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pulley;
@@ -36,6 +38,8 @@ public class RobotContainer {
     private final Joystick driveController, shootController;
     
     public RobotContainer () {
+		SmartDashboard.putBoolean("Test", true);
+		
         driveController = new Joystick(Constants.driveController);
         shootController = new Joystick(Constants.shootController);
         
@@ -67,7 +71,8 @@ public class RobotContainer {
     }
     
     public Command getAutonomousCommand () {
-		return new LeftPath(swerveDrive, pulley, shooter);
+		// return new TestPath(swerveDrive, pulley, shooter);
+		return new StraightPath(swerveDrive, pulley, shooter);
     }
     
     public void onTestInit () {

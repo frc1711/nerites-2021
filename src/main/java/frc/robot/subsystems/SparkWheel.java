@@ -44,13 +44,6 @@ public class SparkWheel extends AutoSwerveWheel {
         // Custom param 0 used to store getAbsolutePosition() offset,
         // with a scaling factor of 1:100 for more precision
         absolutePositionOffset = getAbsoluteOffset(steerEncoder.configGetCustomParam(0, 100));
-		
-        /*
-        79.98
-        58.88
-        106.69
-        172.61
-        */
 
         steerEncoder.setPositionToAbsolute(Integer.MAX_VALUE);
         driveEncoder = driveController.getEncoder();

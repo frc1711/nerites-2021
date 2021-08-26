@@ -28,7 +28,5 @@ public class SlowDrive {
 	public static AutonDrive make (AutoSwerveDrive swerveDrive, double inchesRight, double inchesForward) {
 		return make(swerveDrive, inchesRight, inchesForward, false);
 	}
-	
-	
 
 }
