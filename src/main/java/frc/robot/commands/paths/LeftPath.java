@@ -22,7 +22,7 @@ public class LeftPath extends SequentialCommandGroup {
         addCommands(
 			SlowDrive.make(swerveDrive, 2 * 12, 2 * 12), // Drives ~2.8 ft towards the port
 			SlowTurn.make(swerveDrive, 225), // Turns robot to aim back towards port
-			new Shoot(pulley, shooter, 3, 3), // Shoots all 3 cells at zone 3
+			new Shoot(pulley, shooter, 3, 2), // Shoots all 3 cells at zone 3
 			SlowDrive.make(swerveDrive, 2 * 12, 2 * 12)); // Drives another ~2.8 ft towards the port
     }
 	

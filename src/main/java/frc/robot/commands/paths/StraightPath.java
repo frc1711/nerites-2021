@@ -21,7 +21,7 @@ public class StraightPath extends SequentialCommandGroup {
 	public StraightPath (SparkDrive swerveDrive, Pulley pulley, Shooter shooter) {
         addCommands(
 			SlowTurn.make(swerveDrive, 180), // Aims back of robot towards port
-			new Shoot(pulley, shooter, 3, 3), // Shoots all 3 cells at zone 3
+			new Shoot(pulley, shooter, 3, 2), // Shoots all 3 cells at zone 3
 			SlowDrive.make(swerveDrive, 0, 5.5 * 12)); // Drives 5.5 ft off initiation line
     }
 	

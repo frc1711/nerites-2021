@@ -13,6 +13,7 @@ import frc.robot.commands.SwerveCommand;
 import frc.robot.commands.basic.Shoot;
 import frc.robot.commands.basic.SlowDrive;
 import frc.robot.commands.basic.SlowTurn;
+import frc.robot.commands.paths.LeftPath;
 import frc.robot.commands.paths.StraightPath;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
@@ -66,7 +67,7 @@ public class RobotContainer {
     }
     
     public Command getAutonomousCommand () {
-		return new StraightPath(swerveDrive, pulley, shooter);
+		return new LeftPath(swerveDrive, pulley, shooter);
     }
     
     public void onTestInit () {
