@@ -38,7 +38,6 @@ public class RobotContainer {
     private final Joystick driveController, shootController;
     
     public RobotContainer () {
-		SmartDashboard.putBoolean("Test", true);
 		
         driveController = new Joystick(Constants.driveController);
         shootController = new Joystick(Constants.shootController);
