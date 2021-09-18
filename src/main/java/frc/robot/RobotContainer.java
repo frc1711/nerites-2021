@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -25,10 +26,12 @@ import frc.robot.subsystems.SparkDrive;
 
 public class RobotContainer {
     
+	private final AnalogInput autonInput;
+	
     private final SwerveCommand swerveCommand;
     private final CentralSystem centralSystem;
 	private final ClimberCommand climberCommand;
-    
+	
     private final SparkDrive swerveDrive;
     private final Shooter shooter;
     private final Intake intake;
@@ -38,6 +41,8 @@ public class RobotContainer {
     private final Joystick driveController, shootController;
     
     public RobotContainer () {
+		
+		autonInput = new AnalogInput(0);
 		
         driveController = new Joystick(Constants.driveController);
         shootController = new Joystick(Constants.shootController);
@@ -70,8 +75,16 @@ public class RobotContainer {
     }
     
     public Command getAutonomousCommand () {
-		// return new TestPath(swerveDrive, pulley, shooter);
-		return new StraightPath(swerveDrive, pulley, shooter);
+		System.out.print("Auton selected: ");
+		Command path;
+		
+		if (autonInput.getAverageVoltage() > 2.5)
+			path = new StraightPath(swerveDrive, pulley, shooter);
+		else
+			path = new LeftPath(swerveDrive, pulley, shooter);
+		
+		System.out.println(path.getClass().getName());
+		return path;
     }
     
     public void onTestInit () {
