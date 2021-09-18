@@ -9,7 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pulley;
@@ -24,7 +24,9 @@ import frc.robot.util.ballSystem.PowerCellHandler;
  * @author Gabriel Seaver (adaptation)
  */
 public class CentralSystem extends CommandBase {
-
+	
+	private final Joystick stick;
+	
     private static final int
             shooterButton = 1,           // A
             flyWheelButton = 2,          // B
@@ -35,11 +37,12 @@ public class CentralSystem extends CommandBase {
             changeShooterModeButton = 7, // (Left version of the menu button) OR back button
             manualToggleButton = 8;      // Menu button OR start button
 
+	private final POVButton zoneOneButton, zoneTwoButton, zoneThreeButton, zoneFourButton;
+	
     private final Pulley pulley;
     private final Shooter shooter;
     private final PowerCellHandler powerCellHandler;
     private final Intake intake;
-    private final Joystick stick;
 
     private boolean pastMiddle;
     private boolean shootMode;
@@ -61,7 +64,12 @@ public class CentralSystem extends CommandBase {
         this.intake = intake;
         this.shooter = shooter;
         this.stick = stick;
-
+		
+		zoneOneButton = new POVButton(stick, 0);
+		zoneTwoButton = new POVButton(stick, 90);
+		zoneThreeButton = new POVButton(stick, 180);
+		zoneFourButton = new POVButton(stick, 270);
+		
         this.timeout = 100;
         this.manual = false;
         this.powerCellHandler = new PowerCellHandler();
@@ -189,12 +197,21 @@ public class CentralSystem extends CommandBase {
 
     }
 
-    private void nextShooterSpeedMode() {
-
-        shooterSpeedIndex++;
-        shooterSpeedIndex %= Constants.shooterSpeedModes.length;
-
-        System.out.println("ENTERING SHOOTER ZONE #" + (shooterSpeedIndex + 1));
+    private void checkForChangedShooterMode () {
+		
+		int previousSpeedIndex = shooterSpeedIndex;
+		
+		if (zoneOneButton.get())
+			shooterSpeedIndex = 0;
+		else if (zoneTwoButton.get())
+			shooterSpeedIndex = 1;
+		else if (zoneThreeButton.get())
+			shooterSpeedIndex = 2;
+		else if (zoneFourButton.get())
+			shooterSpeedIndex = 3;
+		
+		if (previousSpeedIndex != shooterSpeedIndex)
+        	System.out.println("ENTERING SHOOTER ZONE #" + (shooterSpeedIndex + 1));
 
     }
 
@@ -265,9 +282,9 @@ public class CentralSystem extends CommandBase {
         flipButtons();
         intake();
         flyWheel();
-
-        // Goes to next shooter speed mode
-        if (stick.getRawButtonReleased(changeShooterModeButton)) nextShooterSpeedMode();
+		
+		// Checks for new shooter speed mode
+		checkForChangedShooterMode();
 
         if (!manual) {
 

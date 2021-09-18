@@ -6,18 +6,12 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.CentralSystem;
 import frc.robot.commands.ClimberCommand;
 import frc.robot.commands.SwerveCommand;
-import frc.robot.commands.basic.Shoot;
-import frc.robot.commands.basic.SlowDrive;
-import frc.robot.commands.basic.SlowTurn;
 import frc.robot.commands.paths.LeftPath;
 import frc.robot.commands.paths.StraightPath;
-import frc.robot.commands.paths.TestPath;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pulley;
@@ -27,6 +21,7 @@ import frc.robot.subsystems.SparkDrive;
 public class RobotContainer {
     
 	private final AnalogInput autonInput;
+	private final Command autonPath;
 	
     private final SwerveCommand swerveCommand;
     private final CentralSystem centralSystem;
@@ -41,8 +36,6 @@ public class RobotContainer {
     private final Joystick driveController, shootController;
     
     public RobotContainer () {
-		
-		autonInput = new AnalogInput(0);
 		
         driveController = new Joystick(Constants.driveController);
         shootController = new Joystick(Constants.shootController);
@@ -72,19 +65,25 @@ public class RobotContainer {
         swerveDrive.setDefaultCommand(swerveCommand);
         shooter.setDefaultCommand(centralSystem);
 		climber.setDefaultCommand(climberCommand);
-    }
-    
-    public Command getAutonomousCommand () {
-		System.out.print("Auton selected: ");
-		Command path;
 		
+		autonInput = new AnalogInput(0);
+		autonPath = getAutonPath();
+    }
+	
+	private Command getAutonPath () {
+		Command path;
 		if (autonInput.getAverageVoltage() > 2.5)
 			path = new StraightPath(swerveDrive, pulley, shooter);
 		else
 			path = new LeftPath(swerveDrive, pulley, shooter);
 		
-		System.out.println(path.getClass().getName());
+		System.out.println("Auton selected: " + path.getClass().getSimpleName());
+		
 		return path;
+	}
+    
+    public Command getAutonomousCommand () {
+		return autonPath;
     }
     
     public void onTestInit () {
